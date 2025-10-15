@@ -1,0 +1,13 @@
+# Ignore system and cache files
+*.swp
+*.bak
+*~
+.cache/
+local/
+logs/
+
+# Avoid accidental secrets
+*.key
+*.pem
+*.crt
+

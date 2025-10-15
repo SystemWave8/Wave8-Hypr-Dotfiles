@@ -1,0 +1,32 @@
+* {
+  font-family: "Symbols Nerd Font", "FiraCode Nerd Font", monospace;
+  font-size: 13px;
+}
+
+#waybar {
+  background: #1e1e2e;
+  color: #ffffff;
+}
+
+#workspaces button {
+  padding: 0 6px;
+  color: #888;
+  background: transparent;
+}
+
+#workspaces button.active {
+  color: #ffffff;
+}
+
+#battery,
+#pulseaudio,
+#network {
+  margin-left: 8px;   /* space before each icon */
+  margin-right: 8px;  /* space after each icon */
+}
+
+#battery,
+#pulseaudio,
+#network {
+  font-size: 14px;  /* bump up from default */
+}
