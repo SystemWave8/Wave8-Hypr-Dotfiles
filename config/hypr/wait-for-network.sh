@@ -7,20 +7,33 @@ while ! ping -c1 -W1 8.8.8.8 >/dev/null 2>&1; do
     sleep 2
 done
 
-# Disable IPv6 on wlan0 (using visudo NOPASSWD rule)
-sudo sysctl -w net.ipv6.conf.wlan0.disable_ipv6=1
+###############################################################################
+# Use this if you run into issues with reconnecting to Wi-Fi after boot.
+# For now, it’s optional — toggle with the flag below.
+###############################################################################
 
-notify-send "Re-Establishing IPv4..."
+USE_IPV6_FIX=false   # ← set this to true if you want to apply the IPv6 fix
 
-# Force reconnect after disabling IPv6
-ip link set wlan0 down
-sleep 2
-ip link set wlan0 up
+if $USE_IPV6_FIX; then
+    notify-send "Applying IPv6 Fix..."
 
-# Wait again until connection is restored
-while ! ping -c1 -W1 8.8.8.8 >/dev/null 2>&1; do
+    # Disable IPv6 on wlan0 (using visudo NOPASSWD rule)
+    sudo sysctl -w net.ipv6.conf.wlan0.disable_ipv6=1
+
+    notify-send "Re-Establishing IPv4..."
+
+    # Force reconnect after disabling IPv6
+    ip link set wlan0 down
     sleep 2
-done
+    ip link set wlan0 up
+
+    # Wait again until connection is restored
+    while ! ping -c1 -W1 8.8.8.8 >/dev/null 2>&1; do
+        sleep 2
+    done
+fi
+
+###############################################################################
 
 # Msg when network is ready
 notify-send "Network is up! Launching Apps!"

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=RMPC ~ Music Player
+Exec=kitty -e rmpc
+Icon=multimedia-audio-player
+Type=Application
+Categories=Audio;Player;
+Keywords=music;mpd;player;rmpc;audio;
