@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=WebApp Builder
-Exec=/home/wave8q/.local/bin/webapp-builder-yad.sh
+Exec=$HOME/.local/bin/webapp-builder-yad.sh
 Type=Application
 Terminal=false
 Categories=Utility;

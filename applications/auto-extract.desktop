@@ -1,8 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
-Version=1.0
+Name=Auto Extract
+Comment=Extract archive contents into a same-named folder
+Exec=/home/wave8l/.local/bin/auto-extract.sh %f
+Icon=package-x-generic
 Type=Application
+MimeType=application/zip;application/x-7z-compressed;application/zstd;
 NoDisplay=true
-Exec=/home/wave8q/.local/bin/auto-extract.sh %f %f
-Name=auto-extract.sh %f
-Comment=Custom definition for auto-extract.sh %f
