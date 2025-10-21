@@ -46,5 +46,16 @@ cavalier &
 env GTK_THEME=Adwaita:dark /home/wave8l/.local/bin/gnome-clocks-dark &
 
 # Terminal apps
-alacritty -t "btop" -e btop &
-alacritty -t "fastfetch" -e sh -c "fastfetch; exec $SHELL"
+
+#if run in Alacritty
+
+#alacritty -t "btop" -e btop &
+#alacritty -t "fastfetch" -e sh -c "fastfetch; exec $SHELL"
+
+#if run in kitty
+
+kitty -T "btop" btop &
+kitty -T "fastfetch" sh -c "fastfetch; exec $SHELL" &
+
+
+
