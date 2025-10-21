@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=WebApp Builder
-Exec=$HOME/.local/bin/webapp-builder-yad.sh
+Exec=bash -c '$HOME/.local/bin/webapp-builder-yad.sh'
 Type=Application
 Terminal=false
 Categories=Utility;
