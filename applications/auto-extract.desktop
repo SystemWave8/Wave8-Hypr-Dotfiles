@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Auto Extract
 Comment=Extract archive contents into a same-named folder
-Exec=/home/wave8l/.local/bin/auto-extract.sh %f
+Exec=bash -c '$HOME/.local/bin/auto-extract.sh "%f"'
 Icon=package-x-generic
 Type=Application
 MimeType=application/zip;application/x-7z-compressed;application/zstd;

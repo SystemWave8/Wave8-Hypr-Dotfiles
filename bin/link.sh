@@ -10,7 +10,7 @@ mkdir -p "$BACKUP_DIR"
 mkdir -p "$BIN_DIR"
 
 # List of config folders to link
-declare -a CONFIGS=("dunst" "gtk-3.0" "gtk-4.0" "hypr" "waybar")
+declare -a CONFIGS=($(ls -1 "$DOTFILES_DIR/config"))
 
 echo ">>> Linking configs..."
 for cfg in "${CONFIGS[@]}"; do
