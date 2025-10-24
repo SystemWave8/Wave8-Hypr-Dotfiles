@@ -43,7 +43,7 @@ notify-send "Have a great day!"
 # Launch apps
 pithos &
 cavalier &
-env GTK_THEME=Adwaita:dark /home/wave8l/.local/bin/gnome-clocks-dark &
+env GTK_THEME=Adwaita:dark $HOME/.local/bin/gnome-clocks-dark &
 
 # Terminal apps
 
