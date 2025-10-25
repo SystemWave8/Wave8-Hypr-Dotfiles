@@ -1,13 +1,24 @@
 #!/usr/bin/env bash
 set -e
 
+# === LOGGING ===
+exec > >(tee -a "setup_$(date +%F_%H-%M-%S).log") 2>&1
+
 # === COLORS ===
 GREEN="\033[0;32m"
 YELLOW="\033[1;33m"
 RESET="\033[0m"
 
-log() { echo -e "${GREEN}==>${RESET} $1"; }
+log()  { echo -e "${GREEN}==>${RESET} $1"; }
 warn() { echo -e "${YELLOW}==>${RESET} $1"; }
+
+# === ENVIRONMENT DETECTION ===
+if [ -f /.dockerenv ] || [ -n "$DISTROBOX_ENTERED" ]; then
+  IN_CONTAINER=true
+  log "Running inside a container — systemd actions will be skipped."
+else
+  IN_CONTAINER=false
+fi
 
 # === PRE-FLIGHT CHECK ===
 if ! grep -q "Arch" /etc/os-release; then
@@ -35,6 +46,17 @@ else
   log "yay already installed."
 fi
 
+# === SERVICE ENABLE HELPER ===
+enable_service() {
+  local svc=$1
+  if [ "$IN_CONTAINER" = false ]; then
+    log "Enabling and starting $svc..."
+    sudo systemctl enable --now "$svc"
+  else
+    log "Skipping $svc inside container..."
+  fi
+}
+
 # === INSTALLATION GROUPS ===
 
 install_base() {
@@ -48,7 +70,7 @@ install_network() {
   log "Installing network & Bluetooth..."
   sudo pacman -S --noconfirm --needed \
     bluez bluez-utils blueman iwd wpa_supplicant openssh
-  sudo systemctl enable --now bluetooth.service
+  enable_service bluetooth.service
 }
 
 install_tools() {
@@ -64,7 +86,7 @@ install_desktop() {
     hyprland uwsm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
     dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
     sddm gnome-keyring seahorse
-  sudo systemctl enable sddm.service
+  enable_service sddm.service
 }
 
 install_fonts_themes() {
@@ -106,7 +128,6 @@ link_dotfiles() {
 }
 
 # === EXECUTION ORDER ===
-
 install_base
 install_network
 install_tools
