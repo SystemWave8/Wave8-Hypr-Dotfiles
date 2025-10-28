@@ -83,7 +83,7 @@ install_tools() {
 install_desktop() {
   log "Installing Hyprland environment..."
   sudo pacman -S --noconfirm --needed \
-    hyprland uwsm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
+    hyprland uwsm xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
     dunst waybar wofi thunar thunar-archive-pluin tumbler polkit-kde-agent \
     sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper
   #enable_service sddm.service
@@ -92,7 +92,7 @@ install_desktop() {
 install_fonts_themes() {
   log "Installing fonts & themes..."
   sudo pacman -S --noconfirm --needed \
-    gnome-themes-extra \
+    gnome-themes-extra \ adwaita-gtk3 adwaita-icon-theme
     ttf-dejavu ttf-hack-nerd ttf-jetbrains-mono-nerd \
     ttf-nerd-fonts-symbols woff2-font-awesome
 }
@@ -115,6 +115,8 @@ install_video_drivers() {
   sudo pacman -S --noconfirm --needed \
     vulkan-intel vulkan-radeon vulkan-nouveau intel-media-driver libva-intel-driver \
     sof-firmware xf86-video-amdgpu xf86-video-ati xf86-video-nouveau
+  # nvidia-dkms nvidia-settings nvidia-utils # Likely will need these few
+
 }
 
 install_extras() {
