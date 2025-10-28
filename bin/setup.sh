@@ -84,8 +84,8 @@ install_desktop() {
   log "Installing Hyprland environment..."
   sudo pacman -S --noconfirm --needed \
     hyprland uwsm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
-    dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
-    sddm gnome-keyring seahorse
+    dunst waybar wofi thunar thunar-archive-pluin tumbler polkit-kde-agent \
+    sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper
   #enable_service sddm.service
 }
 
