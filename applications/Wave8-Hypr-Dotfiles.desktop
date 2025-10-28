@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Wave8-Hypr-Dotfiles
+Exec=/home/wave8q/.local/bin/focus-or-launch.sh "chrome-github.com__SystemWave8_Wave8-Hypr-Dotfiles-Default" "chromium --app=https://github.com/SystemWave8/Wave8-Hypr-Dotfiles"
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Network;
+Icon=applications-internet
+Keywords=wave8-hypr-dotfiles

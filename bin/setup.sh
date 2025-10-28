@@ -70,7 +70,7 @@ install_network() {
   log "Installing network & Bluetooth..."
   sudo pacman -S --noconfirm --needed \
     bluez bluez-utils blueman iwd wpa_supplicant openssh
-  enable_service bluetooth.service
+  #enable_service bluetooth.service
 }
 
 install_tools() {
@@ -86,13 +86,13 @@ install_desktop() {
     hyprland uwsm xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
     dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
     sddm gnome-keyring seahorse
-  enable_service sddm.service
+  #enable_service sddm.service
 }
 
 install_fonts_themes() {
   log "Installing fonts & themes..."
   sudo pacman -S --noconfirm --needed \
-    gnome-icon-theme-symbolic gnome-themes-extra \
+    gnome-themes-extra \
     ttf-dejavu ttf-hack-nerd ttf-jetbrains-mono-nerd \
     ttf-nerd-fonts-symbols woff2-font-awesome
 }
@@ -100,7 +100,7 @@ install_fonts_themes() {
 install_audio() {
   log "Installing audio stack..."
   sudo pacman -S --noconfirm --needed \
-    pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber wiremix gst-plugin-pipewire
+    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire
   yay -S --noconfirm --needed pithos cavalier
 }
 

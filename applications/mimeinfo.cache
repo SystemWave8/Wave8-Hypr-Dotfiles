@@ -1,0 +1,4 @@
+[MIME Cache]
+application/x-7z-compressed=auto-extract.desktop;
+application/zip=auto-extract.desktop;
+application/zstd=auto-extract.desktop;
