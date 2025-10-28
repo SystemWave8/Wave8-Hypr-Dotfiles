@@ -1,0 +1,10 @@
+window {
+	font-size: 22px;
+	font-family: "JetBrainsMonoNF-Regular";
+	background-color: rgba(50,50,50,0.85);
+}
+
+image { margin-left: .25em;
+	margin-right: .25em;
+}
+
