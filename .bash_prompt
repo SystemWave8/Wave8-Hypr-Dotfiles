@@ -1,0 +1,26 @@
+# ~/.bash_prompt
+
+# Function returns plain folder segments as an array
+prompt_dir() {
+    if [[ "$PWD" == "$HOME" ]]; then
+        echo "home"
+    else
+        # Remove $HOME prefix
+        local rel_path="${PWD/#$HOME/}"
+        rel_path="${rel_path#/}"
+        local IFS='/'
+        local segments=($rel_path)
+        # Join segments with arrows (plain)
+        local path=""
+        for segment in "${segments[@]}"; do
+            if [[ -n "$path" ]]; then
+                path+=" ➜ "
+            fi
+            path+="$segment"
+        done
+        echo "$path"
+    fi
+}
+
+# PS1: hostname cyan, folders blue, arrows remain white
+PS1='\[\e[1;36m\]\h\[\e[0m\] ➜ $(echo "$(prompt_dir)" | awk '\''{for(i=1;i<=NF;i++){if($i!="➜")printf "\033[1;34m%s\033[0m",$i; else printf " ➜ "}}'\'') '
