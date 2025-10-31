@@ -1,0 +1,53 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "modules": [
+      {
+                "type": "title",
+                "format": "{host-name-colored}"  //use this line to customize your tile
+            },
+    //"title",
+    "separator",
+    //"host",
+   {
+                "type": "host",
+                "format": "Wave-8"  //use this line to customize your tile
+            },
+    //"os",
+   {
+                "type": "os",
+                "format": "Arch Linux"  //use this line to customize your tile
+            },
+    "kernel",
+    "uptime",
+    "packages",
+    //"shell",
+   {
+                "type": "shell",
+                "format": "bash"  //use this line to customize your tile
+            },
+    //"display",
+    //"de",
+    //"wm",
+   {
+                "type": "wm",
+                "format": "Hyrpland"  //use this line to customize your tile
+            },
+    "wmtheme",
+    "theme",
+    "icons",
+    "font",
+    //"cursor",
+    //"terminal",
+   {
+                "type": "terminal",
+                "format": "kitty"  //use this line to customize your tile
+            },
+    "terminalfont",
+    "cpu",
+    "gpu",
+    "memory",
+    "disk",
+    "break",
+    "colors"
+  ]
+}
