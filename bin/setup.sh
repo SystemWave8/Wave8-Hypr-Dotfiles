@@ -107,7 +107,7 @@ install_audio() {
 install_apps() {
   log "Installing main apps..."
   yay -S --noconfirm --needed \
-    brave-bin chromium thunderbird libreoffice-fresh mousepad gnome-clocks
+    brave-bin chromium thunderbird libreoffice-fresh mousepad gnome-clocks gnome-weather
 }
 
 install_video_drivers() {

@@ -67,7 +67,8 @@
  "pulseaudio": {
     "format": "{icon}",
     //"on-click": "alacritty --class=Wiremix -e wiremix",
-    "on-click": "kitty --class=Wiremix wiremix",
+    //"on-click": "kitty --class=Wiremix wiremix",
+    "on-click": "~/.local/bin/toggle-window.sh Wiremix 'kitty --class=Wiremix wiremix'",
     "on-click-right": "pamixer -t",
     "tooltip-format": "Playing at {volume}%",
     "scroll-step": 5,
@@ -91,11 +92,12 @@
     "interval": 3,
     "nospacing": 1,
     //"on-click": "alacritty --class=Impala -e impala"
-    "on-click": "kitty --class Impala impala"
+    //"on-click": "kitty --class Impala impala"
+    "on-click": "~/.local/bin/toggle-window.sh Impala 'kitty --class=Impala impala'"
   },
 
 //////// Clock Setup /////////////
 
-"clock": { "format": "{:%a %I:%M %p}" }
+"clock": { "format": "{:%a %I:%M %p}","on-click": "~/.local/bin/toggle-window.sh org.gnome.Weather 'gnome-weather'" }
 
 },  
