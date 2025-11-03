@@ -1,16 +1,13 @@
-# ~/.bash_prompt
+# ~/.bash_prompt  -- two-line variant, dimmed second-line arrow
 
-# Function returns plain folder segments as an array
 prompt_dir() {
     if [[ "$PWD" == "$HOME" ]]; then
         echo "home"
     else
-        # Remove $HOME prefix
         local rel_path="${PWD/#$HOME/}"
         rel_path="${rel_path#/}"
         local IFS='/'
         local segments=($rel_path)
-        # Join segments with arrows (plain)
         local path=""
         for segment in "${segments[@]}"; do
             if [[ -n "$path" ]]; then
@@ -22,5 +19,46 @@ prompt_dir() {
     fi
 }
 
-# PS1: hostname cyan, folders blue, arrows remain white
-PS1='\[\e[1;36m\]\h\[\e[0m\] ➜ $(echo "$(prompt_dir)" | awk '\''{for(i=1;i<=NF;i++){if($i!="➜")printf "\033[1;34m%s\033[0m",$i; else printf " ➜ "}}'\'') '
+build_prompt() {
+    local cyan='\[\e[1;36m\]'
+    local blue='\[\e[1;34m\]'
+    local gray='\[\e[90m\]'
+    local reset='\[\e[0m\]'
+
+    local visible
+    visible="$(prompt_dir)"
+    [[ -z "$visible" ]] && visible="home"
+
+    # colorize breadcrumb
+    local tmp="$visible"
+    local colored=""
+    local first=1
+    while [[ -n "$tmp" ]]; do
+        local seg
+        if [[ "$tmp" == *" ➜ "* ]]; then
+            seg="${tmp%% ➜ *}"
+            tmp="${tmp#* ➜ }"
+        else
+            seg="$tmp"
+            tmp=""
+        fi
+        if [[ $first -eq 1 ]]; then
+            colored+="${blue}${seg}${reset}"
+            first=0
+        else
+            colored+=" ➜ ${blue}${seg}${reset}"
+        fi
+    done
+
+    local host="${HOSTNAME:-$(hostname -s)}"
+    local line_visible="${host} ➜ ${visible}"
+
+    # compute total width of first line
+    local total_len=${#line_visible}
+    local spaces=""
+    (( total_len > 0 )) && spaces=$(printf '%*s' "$total_len" '')
+
+    PS1="${cyan}\h${reset} ➜ ${colored}\n${spaces}${gray}➜ ${reset}"
+}
+
+PROMPT_COMMAND=build_prompt
