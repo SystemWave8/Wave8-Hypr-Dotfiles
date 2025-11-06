@@ -84,7 +84,7 @@ install_desktop() {
   log "Installing Hyprland environment..."
   sudo pacman -S --noconfirm --needed \
     hyprland uwsm xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
-    dunst waybar wofi thunar thunar-archive-pluin tumbler polkit-kde-agent \
+    dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
     sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper
   #enable_service sddm.service
 }
@@ -92,7 +92,7 @@ install_desktop() {
 install_fonts_themes() {
   log "Installing fonts & themes..."
   sudo pacman -S --noconfirm --needed \
-    gnome-themes-extra \ adwaita-gtk3 adwaita-icon-theme
+    gnome-themes-extra adwaita-icon-theme \
     ttf-dejavu ttf-hack-nerd ttf-jetbrains-mono-nerd \
     ttf-nerd-fonts-symbols woff2-font-awesome
 }
