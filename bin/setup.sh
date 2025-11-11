@@ -126,7 +126,7 @@ install_extras() {
 
 link_dotfiles() {
   log "Linking dotfiles..."
-  bash ./link.sh
+  bash ~/.dotfiles/bin/link.sh
 }
 
 # === EXECUTION ORDER ===
