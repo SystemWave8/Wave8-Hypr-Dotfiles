@@ -27,7 +27,7 @@ sudo pacman -S git
 ```
 Use the following command to clone and auto setup:
 ```bash
-git clone https://github.com/SystemWave8/Wave8-Hypr-Dotfiles.git ~/.dotfiles && bash ~/.dotfiles/setup.sh
+git clone https://github.com/SystemWave8/Wave8-Hypr-Dotfiles.git ~/.dotfiles && bash ~/.dotfiles/bin/setup.sh
 ```
 It should automatically link any .dotfiles to your system and backup any configs that might be in place.
 Other then that, take it an run with it, though there are probably better .dotfiles out there.
