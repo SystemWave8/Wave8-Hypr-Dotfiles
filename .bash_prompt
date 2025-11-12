@@ -1,5 +1,7 @@
 # ~/.bash_prompt  -- two-line variant, dimmed second-line arrow
 
+	# enter the following line into .bashrc = [[ -f ~/.dotfiles/.bash_prompt ]] && source ~/.dotfiles/.bash_prompt
+
 prompt_dir() {
     if [[ "$PWD" == "$HOME" ]]; then
         echo "home"
