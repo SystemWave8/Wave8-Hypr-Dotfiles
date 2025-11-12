@@ -20,9 +20,15 @@ else
   IN_CONTAINER=false
 fi
 
-# === PRE-FLIGHT CHECK ===
-if ! grep -q "Arch" /etc/os-release; then
-  warn "This script is designed for Arch Linux systems only."
+# === PRE-FLIGHT CHECK === <<--OG preflight
+#if ! grep -q "Arch" /etc/os-release; then
+#  warn "This script is designed for Arch Linux systems only."
+#  exit 1
+#fi
+
+# === PRE-FLIGHT CHECK === << including SteamOS
+if ! grep -qiE "arch|steamos" /etc/os-release; then
+  warn "This script is designed for Arch Linux or SteamOS systems only."
   exit 1
 fi
 
