@@ -1,0 +1,25 @@
+window {
+    font-size: 22px; /* same as main menu */
+    font-family: "JetBrainsMonoNF-Regular";
+    background-color: rgba(50,50,50,0.9); /* same as main menu */
+    width: 20%;       /* slimmer than main menu */
+    border-radius: 12px;
+    padding: 10px;
+}
+
+#input {
+    margin: 6px;
+    padding: 4px;
+    font-size: 22px; 
+    text-align: center;  /* center prompt text */
+}
+
+#entry {
+    padding: 6px 8px;
+    text-align: center;  /* center each menu entry */
+}
+
+#entry:selected {
+    background-color: rgba(100, 150, 255, 0.25);
+    border-radius: 6px;
+}
