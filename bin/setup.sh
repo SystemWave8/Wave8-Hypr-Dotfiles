@@ -91,7 +91,7 @@ install_desktop() {
   sudo pacman -S --noconfirm --needed \
     hyprland uwsm xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
     dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
-    sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper
+    sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper mpv
   #enable_service sddm.service
 }
 
