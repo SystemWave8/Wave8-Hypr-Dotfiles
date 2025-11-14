@@ -1,8 +1,5 @@
-################
-
 Intro:
-
-################
+---
 
 This is a very early build of the .dotfiles and doesn't include any custom features that you might be accustomed to.
 
@@ -12,19 +9,15 @@ Doing so will bring extra confidence behind knowing your system.
 
 ---
 
-################
-
-
 Installation:
-
-################
-
+---
 
 This repository assumes you have a minimal Arch installation and is intended for fresh installations and really....solely Arch (by the way :)
 
 A word of caution - though it should be pretty idempotent, be prepared to have data loss if you don't know how .dotfiles work and git works.
 
 Also, 'archinstall' was personally used on my installation so it should be noob friendly.
+
 ---
 
 The only package that is required to run this installation is git, which you can grab like so:
