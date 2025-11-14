@@ -33,16 +33,25 @@
                 "format": "Hyrpland"  //use this line to customize your tile
             },
     "wmtheme",
-    "theme",
+    //"theme",
+{
+                "type": "theme",
+                "format": "Adwaita-Dark"  //use this line to customize your tile
+            },
     "icons",
-    "font",
+    "font", //JetBrainsMonoNF
     //"cursor",
     //"terminal",
    {
                 "type": "terminal",
                 "format": "kitty"  //use this line to customize your tile
             },
-    "terminalfont",
+    //"terminalfont",
+{
+                "type": "terminalfont",
+                "format": "JetBrainsMono Nerd Font"  //use this line to customize your tile
+            },
+
     "cpu",
     "gpu",
     "memory",
