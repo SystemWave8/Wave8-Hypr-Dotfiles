@@ -15,6 +15,8 @@ Installation:
 
 ################
 
+---
+
 This repository assumes you have a minimal Arch installation and is intended for fresh installations and really....solely Arch (by the way :)
 
 A word of caution - though it should be pretty idempotent, be prepared to have data loss if you don't know how .dotfiles work and git works.
@@ -30,6 +32,7 @@ Use the following command to clone and auto setup:
 ```bash
 git clone https://github.com/SystemWave8/Wave8-Hypr-Dotfiles.git ~/.dotfiles && bash ~/.dotfiles/bin/setup.sh
 ```
+---
 Again, we have to assume that this is from a fresh installation with virtually nothing installed. If you do actually have a '.dotfiles' directory, it will not work.
 I can't point out enough...run this after a fresh minimal installation as this is basically my system installer.
 
