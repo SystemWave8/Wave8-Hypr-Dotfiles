@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONF="/home/wave8l/.config/hypr/looknfeel.conf"
+CONF="$HOME/.config/hypr/looknfeel.conf"
 
 # read current line 26
 CURRENT=$(sed -n '26p' "$CONF" || true)
