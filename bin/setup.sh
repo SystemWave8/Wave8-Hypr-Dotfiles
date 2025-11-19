@@ -83,7 +83,7 @@ install_tools() {
   log "Installing system tools..."
   sudo pacman -S --noconfirm --needed \
     htop btop fastfetch jq 7zip file-roller vim nano yad zenity \
-    udiskie gvfs gvfs-mtp gvfs-gphoto2
+    udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake
 }
 
 install_desktop() {
