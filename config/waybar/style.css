@@ -4,7 +4,7 @@
 }
 
 #waybar {
-  background: #1e1e2e;
+  background: rgba(50,50,50,0.3); /*a few transparent versions can be found on your gpt */   
   color: #ffffff;
 }
 
