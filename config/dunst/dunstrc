@@ -266,7 +266,7 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#2a2a2a"
+    background = "#2a2a2aAA"
     foreground = "#ffffff"
     frame_color = "#2e2e2e"
     timeout = 4
@@ -274,7 +274,7 @@
     default_icon = dialog-information
 
 [urgency_normal]
-    background = "#2a2a2a"
+    background = "#2a2a2aAA"
     foreground = "#ffffff"
     timeout = 4
     override_pause_level = 30
@@ -282,7 +282,7 @@
     default_icon = dialog-information
 
 [urgency_critical]
-    background = "#2a2a2a"
+    background = "#2a2a2aAA"
     foreground = "#ffffff"
     frame_color = "#ff0000"
     timeout = 2
