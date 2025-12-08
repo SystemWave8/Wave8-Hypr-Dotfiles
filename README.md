@@ -49,11 +49,13 @@ Update: Hyprland Plugins
 Some of my hyprland conf files are designed to work with a couple of hyprland plugins.
 For simplicity sake I will provide the setup and installation here.
 
-Hyprscolling:
+Update hyprpm:
 
 ```bash
 hyprpm update
 ```
+
+Note: Repositories will take some time to install.
 
 Add the following repositories:
 
@@ -68,5 +70,5 @@ hyprpm enable Hyprspace
 hyprpm enable hyprscrolling
 ```
 
-A small note: You may need to purge-cache, update and reinstall after hyprland gets updated
+Note: On occasion you may need to hyprpm purge-cache, update and enable after hyprland gets updated. Just the way it goes for now....
 
