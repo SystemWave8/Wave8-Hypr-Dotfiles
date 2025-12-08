@@ -1,7 +1,7 @@
 Intro:
 ---
 
-This is a very early build of the .dotfiles and doesn't include any custom features that you might be accustomed to.
+This is a repository for a dotfiles setup designed for Arch Linux & Hyprland.
 
 Though it's nice to have an easily accessible .dotfiles repo, my recommendation is to find out how to build your own .dotfiles repository.
 
@@ -40,3 +40,33 @@ Other then that, take it an run with it, though there are probably better .dotfi
 Have fun,
 
 Wave-8
+
+
+---
+Update: Hyprland Plugins
+---
+
+Some of my hyprland conf files are designed to work with a couple of hyprland plugins.
+For simplicity sake I will provide the setup and installation here.
+
+Hyprscolling:
+
+```bash
+hyprpm update
+```
+
+Add the following repositories:
+
+```bash
+hyprpm add https://github.com/hyprwm/hyprland-plugins
+hyprpm add https://github.com/KZDKM/Hyprspace
+```
+
+Enable your plugins:
+```bash
+hyprpm enable Hyprspace
+hyprpm enable hyprscrolling
+```
+
+A small note: You may need to purge-cache, update and reinstall after hyprland gets updated
+
