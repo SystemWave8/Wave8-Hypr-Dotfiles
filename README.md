@@ -46,7 +46,7 @@ Wave-8
 Update: Hyprland Plugins
 ---
 
-Some of my hyprland conf files are designed to work with a couple of hyprland plugins.
+My hyprland conf files are designed to work with the hyprscrolling plugin.
 For simplicity sake I will provide the setup and installation here.
 
 Update hyprpm:
@@ -61,14 +61,15 @@ Add the following repositories:
 
 ```bash
 hyprpm add https://github.com/hyprwm/hyprland-plugins
-hyprpm add https://github.com/KZDKM/Hyprspace
+
 ```
 
 Enable your plugins:
 ```bash
-hyprpm enable Hyprspace
 hyprpm enable hyprscrolling
 ```
 
-Note: On occasion you may need to hyprpm purge-cache, update and enable after hyprland gets updated. Just the way it goes for now....
+Note: On occasion you may need to hyprpm purge-cache, update and enable after hyprland gets updated. HOWEVER, "hyprpm update" should do the trick.
+
+Enjoy!
 
