@@ -106,7 +106,7 @@ install_fonts_themes() {
 install_audio() {
   log "Installing audio stack..."
   sudo pacman -S --noconfirm --needed \
-    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire
+    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire mpd rmpc
   yay -S --noconfirm --needed pithos cavalier
 }
 
