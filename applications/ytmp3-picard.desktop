@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=YTMP3 Song DL & Tagger
+Exec=bash -c '$HOME/.local/bin/ytmp3_picard_gui.sh'
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility;

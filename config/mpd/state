@@ -1,7 +1,7 @@
 sw_volume: 100
 audio_device_state:1:PipeWire
 state: stop
-current: 12
+current: 0
 random: 0
 repeat: 0
 single: 0
@@ -13,19 +13,9 @@ lastloadedplaylist:
 playlist_begin
 0:01 Irvine.mp3
 1:01 Laz.mp3
-2:01 New Jeans.mp3
-3:01 OMG.mp3
-4:01 Zero.mp3
-5:02 Ditto.mp3
-6:02 Right Now.mp3
-7:02 Super Shy.mp3
-8:03 ETA.mp3
-9:1-04 Imagiro - wool gloves.mp3
-10:04 Cool With You.mp3
-11:05 Get Up.mp3
-12:06 ASAP.mp3
-13:10 Only in Dreams.mp3
-14:1-11 Aso - espresso.mp3
-15:20 Leavv - Delirious.mp3
-16:21 Aso - Window.mp3
+2:1-04 Imagiro - wool gloves.mp3
+3:1-11 Aso - espresso.mp3
+4:20 Leavv - Delirious.mp3
+5:21 Aso - Window.mp3
+6:01 Irvine.mp3
 playlist_end
