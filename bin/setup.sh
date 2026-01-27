@@ -106,7 +106,7 @@ install_fonts_themes() {
 install_audio() {
   log "Installing audio stack..."
   sudo pacman -S --noconfirm --needed \
-    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire picard yt-dlp
+    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire picard yt-dlp chromaprint
   yay -S --noconfirm --needed pithos cavalier
 }
 
@@ -175,6 +175,10 @@ sudo tee /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
 User=$USER_NAME
 Session=$SESSION_NAME
 EOF
+
+# ---- GTK Dark Mode ----
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
 
 log "🎉 Setup complete! You can reboot now."
