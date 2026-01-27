@@ -1,0 +1,7 @@
+# ~/.dotfiles/bash_env
+
+# Custom sudo prompt, aligned horizontally
+export SUDO_PROMPT=$'                                      Enter Password: '
+
+# other environment variables can go here
+#export EDITOR=nano

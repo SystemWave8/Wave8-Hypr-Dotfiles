@@ -180,5 +180,14 @@ EOF
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
+BASHRC="$HOME/.bashrc"
+
+# Ensure each source line is only added once
+grep -qxF '[[ -f ~/.dotfiles/.bash_prompt ]] && source ~/.dotfiles/.bash_prompt' "$BASHRC" || echo '[[ -f ~/.dotfiles/.bash_prompt ]] && source ~/.dotfiles/.bash_prompt' >> "$BASHRC"
+grep -qxF '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' "$BASHRC" || echo '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' >> "$BASHRC"
+grep -qxF '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' "$BASHRC" || echo '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' >> "$BASHRC"
+
+echo "Dotfiles sources added to .bashrc."
+
 
 log "🎉 Setup complete! You can reboot now."
