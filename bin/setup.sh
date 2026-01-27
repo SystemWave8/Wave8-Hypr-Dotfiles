@@ -106,14 +106,14 @@ install_fonts_themes() {
 install_audio() {
   log "Installing audio stack..."
   sudo pacman -S --noconfirm --needed \
-    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire
+    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire picard yt-dlp
   yay -S --noconfirm --needed pithos cavalier
 }
 
 install_apps() {
   log "Installing main apps..."
   yay -S --noconfirm --needed \
-    brave-bin chromium thunderbird onlyoffice-bin mousepad gnome-clocks gnome-weather
+    brave-bin chromium thunderbird onlyoffice-bin mousepad gnome-clocks gnome-weather localsend-bin
 }
 
 install_video_drivers() {

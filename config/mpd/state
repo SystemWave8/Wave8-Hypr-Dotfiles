@@ -1,7 +1,8 @@
 sw_volume: 100
 audio_device_state:1:PipeWire
-state: stop
-current: 0
+state: play
+current: 5
+time: 119.944
 random: 0
 repeat: 0
 single: 0
@@ -13,9 +14,11 @@ lastloadedplaylist:
 playlist_begin
 0:01 Irvine.mp3
 1:01 Laz.mp3
-2:1-04 Imagiro - wool gloves.mp3
-3:1-11 Aso - espresso.mp3
-4:20 Leavv - Delirious.mp3
-5:21 Aso - Window.mp3
-6:01 Irvine.mp3
+2:02 Aso - Ur Ok.mp3
+3:03 Aso - B Urself.mp3
+4:1-04 Imagiro - wool gloves.mp3
+5:1-11 Aso - espresso.mp3
+6:19 Aso - Nice Day.mp3
+7:20 Leavv - Delirious.mp3
+8:21 Aso - Window.mp3
 playlist_end
