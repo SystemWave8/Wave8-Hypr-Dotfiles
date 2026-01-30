@@ -106,7 +106,7 @@ install_fonts_themes() {
 install_audio() {
   log "Installing audio stack..."
   sudo pacman -S --noconfirm --needed \
-    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire picard yt-dlp chromaprint
+    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire picard yt-dlp chromaprint mpd mpc rmpc
   yay -S --noconfirm --needed pithos cavalier
 }
 
@@ -188,6 +188,23 @@ grep -qxF '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' "$BASHR
 grep -qxF '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' "$BASHRC" || echo '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' >> "$BASHRC"
 
 echo "Dotfiles sources added to .bashrc."
+
+echo "finalizing/enablind service for audio stack for mpd - > allows rmpc to function"
+
+systemctl --user enable mpd
+systemctl --user start mpd
+
+# -----------------------------
+# Hyprland local window rules
+# -----------------------------
+RULE_DIR="$HOME/.config/hypr-local-windowrules"
+
+mkdir -p "$RULE_DIR"
+
+touch \
+  "$RULE_DIR/floating.conf" \
+  "$RULE_DIR/tiled.conf"
+
 
 
 log "🎉 Setup complete! You can reboot now."
