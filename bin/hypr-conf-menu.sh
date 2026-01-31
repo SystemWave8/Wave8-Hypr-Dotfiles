@@ -2,20 +2,25 @@
 
 CONFIG_DIR="$HOME/.dotfiles/config/hypr"
 
-# Build the menu entries (remove .conf and capitalize words)
+# Build menu entries as: "Pretty Name|real_filename.conf"
 menu_entries=$(for f in "$CONFIG_DIR"/*.conf; do
-    name=$(basename "$f" .conf)
-    # Capitalize first letter of each word
-    clean_name=$(echo "$name" | sed -E 's/(^|_|\b)([a-z])/\U\2/g')
-    echo "$clean_name"
+    base=$(basename "$f" .conf)
+
+    # Pretty label: replace - and _ with spaces, capitalize words
+    pretty=$(echo "$base" \
+        | sed -E 's/[-_]/ /g' \
+        | sed -E 's/(^| )([a-z])/\U\2/g')
+
+    echo "$pretty|$base.conf"
 done)
 
-# Show Wofi menu using the slim, centered config
-choice=$(echo "$menu_entries" | wofi --dmenu --prompt "Edit Hypr config:" --config ~/.config/wofi/hypr.conf)
+# Show only the pretty label in Wofi
+choice=$(echo "$menu_entries" \
+    | cut -d'|' -f1 \
+    | wofi --dmenu --prompt "Edit Hypr config:" --config ~/.config/wofi/hypr.conf)
 
-# Open the selected file in mousepad
+# If a choice was made, find the matching real filename
 if [ -n "$choice" ]; then
-    # Convert back to lowercase filename to match actual .conf
-    filename=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
-    mousepad "$CONFIG_DIR/${filename}.conf"
+    real_file=$(echo "$menu_entries" | grep "^$choice|" | cut -d'|' -f2)
+    mousepad "$CONFIG_DIR/$real_file"
 fi

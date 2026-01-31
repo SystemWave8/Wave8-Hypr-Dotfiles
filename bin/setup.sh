@@ -127,7 +127,7 @@ install_video_drivers() {
 
 install_extras() {
   log "Installing fun / extras..."
-  yay -S --noconfirm --needed tty-clock cmatrix impala
+  yay -S --noconfirm --needed impala
 }
 
 link_dotfiles() {
@@ -195,7 +195,7 @@ systemctl --user enable mpd
 systemctl --user start mpd
 
 # -----------------------------
-# Hyprland local window rules
+# Hyprland local window rules - necessary for layout capture
 # -----------------------------
 RULE_DIR="$HOME/.config/hypr-local-windowrules"
 
