@@ -72,8 +72,6 @@ if [[ -z "$WM_CLASS" ]]; then
 fi
 
 # === Step 4: Rewrite Exec line with focus-or-launch ===
-cp "$DESKTOP_FILE" "$DESKTOP_FILE.bak"
-
 NEW_EXEC="$HOME/.local/bin/focus-or-launch.sh \"$WM_CLASS\" \"$ORIG_EXEC\""
 sed -i "s|^Exec=.*|Exec=$NEW_EXEC|" "$DESKTOP_FILE"
 
