@@ -13,18 +13,37 @@ mkdir -p "$RULE_DIR"
 # -----------------------------
 # MODE SELECTION
 # -----------------------------
-MODE=$(printf "floating\ntiled\n" | wofi --dmenu --prompt "Capture windows as:")
 
-[[ -z "$MODE" ]] && exit 0
+ACTION=$(printf \
+"capture → floating\ncapture → tiled\nreset → floating\nreset → tiled\ncancel\n" \
+| wofi --dmenu --prompt "Hypr Rule Recorder")
 
-case "$MODE" in
-    floating) OUT_FILE="$FLOAT_FILE" ;;
-    tiled)    OUT_FILE="$TILED_FILE" ;;
-    *) exit 1 ;;
+[[ -z "$ACTION" || "$ACTION" == "cancel" ]] && exit 0
+
+case "$ACTION" in
+    "capture → floating")
+        MODE="floating"
+        OUT_FILE="$FLOAT_FILE"
+        ;;
+    "capture → tiled")
+        MODE="tiled"
+        OUT_FILE="$TILED_FILE"
+        ;;
+    "reset → floating")
+        > "$FLOAT_FILE"
+        notify-send -a "Hypr Rule Recorder" -u low "Floating rules reset"
+        exit 0
+        ;;
+    "reset → tiled")
+        > "$TILED_FILE"
+        notify-send -a "Hypr Rule Recorder" -u low "Tiled rules reset"
+        exit 0
+        ;;
+    *)
+        exit 1
+        ;;
 esac
 
-# Ensure target file exists
-touch "$OUT_FILE"
 
 # -----------------------------
 # ACTIVE WORKSPACE
