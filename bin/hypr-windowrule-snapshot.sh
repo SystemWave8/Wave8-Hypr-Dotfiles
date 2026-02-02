@@ -10,12 +10,13 @@ TILED_FILE="$RULE_DIR/tiled.conf"
 
 mkdir -p "$RULE_DIR"
 
+
 # -----------------------------
 # MODE SELECTION
 # -----------------------------
 
 ACTION=$(printf \
-"capture → floating\ncapture → tiled\nreset → floating\nreset → tiled\ncancel\n" \
+"capture → floating\ncapture → tiled\nreset\ncancel\n" \
 | wofi --dmenu --prompt "Hypr Rule Recorder")
 
 [[ -z "$ACTION" || "$ACTION" == "cancel" ]] && exit 0
@@ -29,20 +30,17 @@ case "$ACTION" in
         MODE="tiled"
         OUT_FILE="$TILED_FILE"
         ;;
-    "reset → floating")
+    "reset")
         > "$FLOAT_FILE"
-        notify-send -a "Hypr Rule Recorder" -u low "Floating rules reset"
-        exit 0
-        ;;
-    "reset → tiled")
         > "$TILED_FILE"
-        notify-send -a "Hypr Rule Recorder" -u low "Tiled rules reset"
+        notify-send -a "Hypr Rule Recorder" -u low "All window rules reset"
         exit 0
         ;;
     *)
         exit 1
         ;;
 esac
+
 
 
 # -----------------------------
@@ -153,3 +151,9 @@ notify-send \
   -a "Hypr Rule Recorder" \
   -u low \
   "Layout Updated ($MODE)"
+
+# -----------------------------
+# CLEANUP TEMP FILES
+# -----------------------------
+find "$RULE_DIR" -type f -name "*.tmp" -exec rm -f {} +
+
