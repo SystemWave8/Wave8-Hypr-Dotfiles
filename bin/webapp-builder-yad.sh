@@ -7,7 +7,7 @@ INPUTS=$(yad --form \
     --width=500 --height=300 \
     --field="Web App URL (include https://):" "" \
     --field="App Name:" "" \
-    --field="Browser:CB" "Brave!Chromium!Other")
+    --field="Browser:CB" "Brave!Chromium!Helium!Other")
 
 # If cancelled, exit
 [[ $? -ne 0 ]] && exit 1
@@ -25,6 +25,7 @@ fi
 case "$BROWSER_CHOICE" in
     Brave) BROWSER_CMD="brave" ;;
     Chromium) BROWSER_CMD="chromium" ;;
+    Helium) BROWSER_CMD="helium-browser" ;;
     Other) 
         BROWSER_CMD=$(yad --entry --title="Custom Browser" --text="Enter full browser command:")
         [[ -z "$BROWSER_CMD" ]] && exit 1
