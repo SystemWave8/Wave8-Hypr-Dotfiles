@@ -113,7 +113,7 @@ install_audio() {
 install_apps() {
   log "Installing main apps..."
   yay -S --noconfirm --needed \
-    brave-bin chromium thunderbird onlyoffice-bin mousepad gnome-clocks gnome-weather localsend-bin
+    brave-bin chromium thunderbird onlyoffice-bin mousepad gnome-clocks gnome-weather localsend-bin helium-browser-bin
 }
 
 install_video_drivers() {

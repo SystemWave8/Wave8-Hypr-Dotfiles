@@ -1,6 +1,10 @@
 #!/bin/bash
 
 DOWNLOAD_DIR="$HOME/Downloads"
+MUSIC_DIR="$HOME/Music"
+
+mkdir -p "$MUSIC_DIR"
+
 notify_id=8888  # fixed ID so updates overwrite
 
 # Function to show a bar-style notification
@@ -63,3 +67,19 @@ for i in $(seq 96 100); do
     show_bar "Done!" $i
     sleep 0.05
 done
+
+# --- Phase 5: Move MP3 to Music folder ---
+show_bar "Moving MP3 to Music folder..." 95
+NEW_MP3=$(ls -t "$DOWNLOAD_DIR"/*.mp3 2>/dev/null | head -n1)
+
+if [ -n "$NEW_MP3" ]; then
+    mv "$NEW_MP3" "$MUSIC_DIR/"
+    show_bar "MP3 moved to Music folder!" 100
+else
+    show_bar "No MP3 found to move." 100
+fi
+sleep 0.5
+
+mpc update
+
+
