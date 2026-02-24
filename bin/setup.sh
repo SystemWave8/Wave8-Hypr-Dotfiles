@@ -165,16 +165,16 @@ done
 # --- SDDM autologin configuration ---
 # Drop-in config location: /etc/sddm.conf.d/
 
-USER_NAME="${SUDO_USER:-$USER}"
-SESSION_NAME="hyprland"
+#USER_NAME="${SUDO_USER:-$USER}"
+#SESSION_NAME="hyprland"
 
-sudo mkdir -p /etc/sddm.conf.d
+#sudo mkdir -p /etc/sddm.conf.d
 
-sudo tee /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
-[Autologin]
-User=$USER_NAME
-Session=$SESSION_NAME
-EOF
+#sudo tee /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
+#[Autologin]
+#User=$USER_NAME
+#Session=$SESSION_NAME
+#EOF
 
 # ---- GTK Dark Mode ----
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'

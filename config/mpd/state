@@ -1,11 +1,11 @@
 sw_volume: 100
 audio_device_state:1:PipeWire
 state: pause
-current: 1
-time: 88.024
+current: 8
+time: 105.147
 random: 0
 repeat: 1
-single: 1
+single: 0
 consume: 0
 crossfade: 0
 mixrampdb: 0
@@ -15,5 +15,16 @@ playlist_begin
 0:01 Again.mp3
 1:01 Day Off.mp3
 2:01 Flowers.mp3
-3:08 G Mills - Stuck in Edmonton.mp3
+3:01 sunflowers.mp3
+4:01 Shy Dancer.mp3
+5:02 delayde with temmo - a tiny ferry.mp3
+6:04 Philanthrope - Espoir.mp3
+7:05 Spencer Hunt & WYS - VHS.mp3
+8:07 Aso - Home.mp3
+9:08 G Mills - Stuck in Edmonton.mp3
+10:09 Aso & Hopes - Love Is.mp3
+11:09 Philanthrope - Rebirth.mp3
+12:30 Aso ft. Khadisma - Little Windy.mp3
+13:Driving.mp3
+14:Summer Camp.mp3
 playlist_end
