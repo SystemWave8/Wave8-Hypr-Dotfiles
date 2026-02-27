@@ -216,8 +216,13 @@ echo "Dotfiles sources added to .bashrc."
 
 echo "finalizing/enablind service for audio stack for mpd - > allows rmpc to function"
 
+#MPD section -------------------
+
 systemctl --user enable mpd
 systemctl --user start mpd
+
+#After cloning use this command to block any updates to git - >'git update-index --skip-worktree config/mpd/database config/mpd/state'
+#make sure to navigate to your root dotfiles folder - cd .dotfiles :)
 
 # -----------------------------
 # Hyprland local window rules - necessary for layout capture
