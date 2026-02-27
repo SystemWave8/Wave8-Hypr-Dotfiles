@@ -91,7 +91,7 @@ install_desktop() {
   sudo pacman -S --noconfirm --needed \
     hyprland uwsm xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
     dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
-    sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper mpv
+    sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper mpv flatpak
   #enable_service sddm.service
 }
 
@@ -179,6 +179,31 @@ done
 # ---- GTK Dark Mode ----
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+
+#=======================================================
+
+# --- Install Flatpaks - for now, only Brave ---
+
+log "Checking Flatpak installation"
+
+if ! command -v flatpak >/dev/null 2>&1; then
+  log "Installing Flatpak"
+  sudo pacman -S --needed --noconfirm flatpak
+else
+  log "Flatpak already installed"
+fi
+
+log "Checking Flatpak Brave Browser"
+
+if ! flatpak list --app | grep -q "^Brave Browser"; then
+  log "Installing Flatpak Brave Browser"
+  flatpak install -y flathub com.brave.Browser
+else
+  log "Flatpak Brave already installed"
+fi
+
+#=======================================================
+
 
 BASHRC="$HOME/.bashrc"
 
