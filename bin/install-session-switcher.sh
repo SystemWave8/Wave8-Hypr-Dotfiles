@@ -181,6 +181,7 @@ echo "Switching session to $session_launcher for user $CURRENT_USER"
     echo "[Autologin]"
     echo "User=$CURRENT_USER"
     echo "Session=$session_launcher"
+    echo "Relogin=true"
 } > "$CONF"
 
 systemctl restart sddm
