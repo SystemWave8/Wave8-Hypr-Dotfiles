@@ -26,15 +26,18 @@ notify-send "Network is up! Launching Apps!"
 sleep 1
 notify-send "Have a great day!"
 
-# Launch apps
-if [[ "$(hostname)" == "airland" ]]; then
-    pithos &
-    kitty -T "btop" btop &
-    exit 0
-fi
-
+# Always launch these
 pithos &
-cavalier &
-env GTK_THEME=Adwaita:dark $HOME/.local/bin/gnome-clocks-dark &
 kitty -T "btop" btop &
-kitty -T "fastfetch" sh -c "fastfetch; exec $SHELL" &
+
+# Only minimal stack for wave-air
+if [ "$USER" = "wave-air" ]; then
+    # Minimal stack: nothing extra
+    :
+else
+    # Full stack for any other machine
+     cavalier &
+     env GTK_THEME=Adwaita:dark $HOME/.local/bin/gnome-clocks-dark &
+     kitty -T "fastfetch" sh -c "fastfetch; exec $SHELL" &
+    :
+fi
