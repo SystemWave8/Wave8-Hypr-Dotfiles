@@ -221,6 +221,9 @@ echo "finalizing/enablind service for audio stack for mpd - > allows rmpc to fun
 systemctl --user enable mpd
 systemctl --user start mpd
 
+#run this after cloning @ .dotfiles:
+# git update-index --skip-worktree config/mpd/database config/mpd/state
+
 #After cloning use this command to block any updates to git - >'git update-index --skip-worktree config/mpd/database config/mpd/state'
 #make sure to navigate to your root dotfiles folder - cd .dotfiles :)
 
