@@ -46,30 +46,8 @@ Wave-8
 Update: Hyprland Plugins
 ---
 
-My hyprland conf files are designed to work with the hyprscrolling plugin.
-For simplicity sake I will provide the setup and installation here.
+The main hyprland package was updated to incorporate scrolling style thus eliminating the need for my build of hyprland.
 
-Update hyprpm:
-
-```bash
-hyprpm update
-```
-
-Note: Repositories will take some time to install.
-
-Add the following repositories:
-
-```bash
-hyprpm add https://github.com/hyprwm/hyprland-plugins
-
-```
-
-Enable your plugins:
-```bash
-hyprpm enable hyprscrolling
-```
-
-Note: On occasion you may need to hyprpm purge-cache, update and enable after hyprland gets updated. HOWEVER, "hyprpm update" should do the trick.
+As such, just use super+alt-L to switch between dwindle and scrolling on the fly.
 
 Enjoy!
-
