@@ -1,0 +1,49 @@
+Small Notes on SteamOS settings:
+
+
+### Netflix Launch Command (load from Brave flatpak)
+
+"run" --branch=stable --arch=x86_64 --command=brave --file-forwarding com.brave.Browser --device=dri --env=LIBVA_DRIVER_NAME=radeonsi --env=VDPAU_DRIVER=radeonsi --env=MOZ_DISABLE_RDD_SANDBOX=1 --start-fullscreen "https://www.netflix.com"
+
+
+### Disable Steamdeck - > so that in game settings revert to full pc settings - e.g. MK1
+
+SteamDeck=0 %command%
+
+
+
+### Game Entries
+
+Bloodborne
+
+
+Target:
+
+/home/Wav-8T/Applications/Shadps4-qt.AppImage
+
+
+Start in
+
+/home/Wav-8T/Applications
+
+
+Launch Options
+
+-e '/home/Wav-8T/.local/share/shadPS4QtLauncher/versions/v0.13.0 - Ghost
+of Matthewshima - 2025-12-24/Shadps4-sdl.AppImage' -g
+/home/Wav-8T/emudeck/Emulation/storage/shadps4/games/CUSA03173/eboot.bin
+
+
+Zelda - Tears of the Kingdom
+
+
+Target:
+
+"/home/Wav-8T/emudeck/Emulation/roms/emulators/ryujinx.sh" --fullscreen
+"/home/Wav-8T/.config/EmuDeck/Emulation/roms/switch/Atlas - Divine Tears
+1.nsp"
+
+
+Start In
+
+/home/Wav-8T/emudeck/Emulation/roms/emulators
