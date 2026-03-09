@@ -20,16 +20,22 @@ else
   IN_CONTAINER=false
 fi
 
-# === PRE-FLIGHT CHECK === <<--OG preflight
-#if ! grep -q "Arch" /etc/os-release; then
-#  warn "This script is designed for Arch Linux systems only."
-#  exit 1
-#fi
-
-# === PRE-FLIGHT CHECK === << including SteamOS
+# === PRE-FLIGHT CHECK ===
 if ! grep -qiE "arch|steamos" /etc/os-release; then
   warn "This script is designed for Arch Linux or SteamOS systems only."
   exit 1
+fi
+
+# === HARDWARE DETECTION ===
+# Detect NVIDIA GPU via lspci — covers all controller types (VGA, 3D, Display)
+# On Optimus setups the NVIDIA card appears as "3D controller", not "VGA compatible controller"
+HAS_NVIDIA=false
+lspci | grep -qi nvidia && HAS_NVIDIA=true
+
+if [ "$HAS_NVIDIA" = true ]; then
+  log "NVIDIA GPU detected — NVIDIA driver stack will be installed."
+else
+  log "No NVIDIA GPU detected — skipping NVIDIA setup."
 fi
 
 sudo -v  # ask for sudo password upfront
@@ -121,8 +127,50 @@ install_video_drivers() {
   sudo pacman -S --noconfirm --needed \
     vulkan-intel vulkan-radeon vulkan-nouveau intel-media-driver libva-intel-driver \
     sof-firmware xf86-video-amdgpu xf86-video-ati xf86-video-nouveau
-  # nvidia-dkms nvidia-settings nvidia-utils # Likely will need these few
+}
 
+install_nvidia_gpu() {
+  # Requires: NVIDIA GPU detected via HAS_NVIDIA flag
+  # Installs the open DKMS driver stack and explicitly triggers the DKMS build.
+  # Without linux-headers + manual dkms install, nvidia-smi fails silently
+  # and apps like Ollama fall back to CPU. This sequence is the known-good fix.
+  # Nouveau is blacklisted at the kernel module level to prevent conflicts.
+  # Note: userspace packages (vulkan-nouveau, xf86-video-nouveau) are left
+  # in place from install_video_drivers — only the kernel module is blocked.
+
+  log "Installing NVIDIA drivers (open DKMS)..."
+  sudo pacman -S --noconfirm --needed \
+    linux-headers \
+    linux-firmware-nvidia \
+    nvidia-open-dkms \
+    nvidia-utils \
+    nvidia-settings \
+    lib32-nvidia-utils
+
+  log "Blacklisting nouveau kernel module..."
+  sudo tee /etc/modprobe.d/blacklist-nouveau.conf > /dev/null <<EOF
+blacklist nouveau
+options nouveau modeset=0
+EOF
+
+  log "Triggering DKMS build for NVIDIA module..."
+  NVIDIA_VER=$(pacman -Q nvidia-open-dkms | awk '{print $2}' | cut -d- -f1)
+  KERNEL_VER=$(uname -r)
+
+  # Check if module is already built for this kernel — skip if so
+  if dkms status nvidia/"$NVIDIA_VER" -k "$KERNEL_VER" 2>/dev/null | grep -q "installed"; then
+    log "NVIDIA DKMS module already built for kernel $KERNEL_VER — skipping build."
+  else
+    log "Building NVIDIA DKMS module for kernel $KERNEL_VER..."
+    if sudo dkms install nvidia/"$NVIDIA_VER" -k "$KERNEL_VER"; then
+      log "DKMS build successful."
+    else
+      warn "DKMS build failed — nvidia-smi may not work until after a reboot or manual fix."
+      warn "Run: sudo dkms install nvidia/$NVIDIA_VER -k $KERNEL_VER"
+    fi
+  fi
+
+  log "NVIDIA setup complete — reboot required for module to load."
 }
 
 install_extras() {
@@ -144,6 +192,7 @@ install_fonts_themes
 install_audio
 install_apps
 install_video_drivers
+[ "$HAS_NVIDIA" = true ] && install_nvidia_gpu
 install_extras
 link_dotfiles
 
@@ -214,18 +263,19 @@ grep -qxF '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases'
 
 echo "Dotfiles sources added to .bashrc."
 
-echo "finalizing/enablind service for audio stack for mpd - > allows rmpc to function"
+echo "Finalizing/enabling service for audio stack for mpd — allows rmpc to function"
 
-#MPD section -------------------
+# MPD section -------------------
 
 systemctl --user enable mpd
 systemctl --user start mpd
 
-#run this after cloning @ .dotfiles:
+# run this after cloning @ .dotfiles:
 # git update-index --skip-worktree config/mpd/database config/mpd/state
 
-#After cloning use this command to block any updates to git - >'git update-index --skip-worktree config/mpd/database config/mpd/state'
-#make sure to navigate to your root dotfiles folder - cd .dotfiles :)
+# After cloning use this command to block any updates to git:
+# 'git update-index --skip-worktree config/mpd/database config/mpd/state'
+# make sure to navigate to your root dotfiles folder — cd .dotfiles :)
 
 # -----------------------------
 # Hyprland local window rules - necessary for layout capture
