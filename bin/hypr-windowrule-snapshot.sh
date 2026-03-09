@@ -10,20 +10,22 @@ TILED_FILE="$RULE_DIR/tiled.conf"
 
 mkdir -p "$RULE_DIR"
 
-
 # -----------------------------
 # MODE SELECTION
 # -----------------------------
-
 ACTION=$(printf \
-"capture → floating\ncapture → tiled\nreset\ncancel\n" \
+"capture → floating\ncapture → floating - w/ workspace\ncapture → tiled\nreset\ncancel\n" \
 | wofi --dmenu --prompt "Hypr Rule Recorder")
 
 [[ -z "$ACTION" || "$ACTION" == "cancel" ]] && exit 0
 
 case "$ACTION" in
     "capture → floating")
-        MODE="floating"
+        MODE="floating_global"
+        OUT_FILE="$FLOAT_FILE"
+        ;;
+    "capture → floating - w/ workspace")
+        MODE="floating_ws"
         OUT_FILE="$FLOAT_FILE"
         ;;
     "capture → tiled")
@@ -42,11 +44,11 @@ case "$ACTION" in
 esac
 
 
-
 # -----------------------------
 # ACTIVE WORKSPACE
 # -----------------------------
 ACTIVE_WS=$(hyprctl activeworkspace -j | jq -r '.id')
+
 
 # -----------------------------
 # CAPTURE WINDOWS
@@ -54,6 +56,7 @@ ACTIVE_WS=$(hyprctl activeworkspace -j | jq -r '.id')
 hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
     .[] | select(.workspace.id == $ws)
 ' | while read -r win; do
+
     class=$(jq -r '.class' <<< "$win")
     title=$(jq -r '.title' <<< "$win")
     x=$(jq -r '.at[0]' <<< "$win")
@@ -71,17 +74,14 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
         use_title=true
     fi
 
-    # Human-readable name
     name="$class"
     $use_title && name="$title"
 
-    # Escape regex characters
     esc_class=$(printf '%s\n' "$class" | sed 's/[.[\*^$(){}+?|]/\\&/g')
     esc_title=$(printf '%s\n' "$title" | sed 's/[.[\*^$(){}+?|]/\\&/g')
 
     # -----------------------------
     # REMOVE EXISTING MATCHING RULE
-    # Identity = class (+ title if kitty) + workspace
     # -----------------------------
     awk -v class="^$esc_class$" \
         -v title="^$esc_title$" \
@@ -100,7 +100,6 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
 
             if (
                 $0 ~ "match:class = " class &&
-                $0 ~ "workspace = " ws &&
                 (!use_title || $0 ~ "match:title = " title)
             ) {
                 skip=1
@@ -118,6 +117,7 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
         { print }
     ' "$OUT_FILE" > "$OUT_FILE.tmp" && mv "$OUT_FILE.tmp" "$OUT_FILE"
 
+
     # -----------------------------
     # APPEND NEW RULE
     # -----------------------------
@@ -131,9 +131,13 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
         fi
 
         echo
-        echo "    workspace = $ACTIVE_WS"
 
-        if [[ "$MODE" == "floating" ]]; then
+        # Only apply workspace restriction if requested
+        if [[ "$MODE" == "floating_ws" || "$MODE" == "tiled" ]]; then
+            echo "    workspace = $ACTIVE_WS"
+        fi
+
+        if [[ "$MODE" == "floating_global" || "$MODE" == "floating_ws" ]]; then
             echo "    float = on"
             echo "    size = $w $h"
             echo "    move = $x $y"
@@ -144,6 +148,7 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
     } >> "$OUT_FILE"
 
 done
+
 
 echo "Rules updated in $OUT_FILE"
 
@@ -156,4 +161,3 @@ notify-send \
 # CLEANUP TEMP FILES
 # -----------------------------
 find "$RULE_DIR" -type f -name "*.tmp" -exec rm -f {} +
-
