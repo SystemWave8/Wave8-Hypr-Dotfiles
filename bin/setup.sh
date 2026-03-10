@@ -288,6 +288,38 @@ touch \
   "$RULE_DIR/floating.conf" \
   "$RULE_DIR/tiled.conf"
 
+# -----------------------------
+# Hyprpaper local configuration
+# -----------------------------
+HYPRPAPER_LOCAL_DIR="$HOME/.config/hyprpaper-local"
+WALLPAPER_DIR="$HOME/Pictures/Starfield"
+DOTFILES_WALL_DIR="$HOME/.dotfiles/Pictures/Starfield"
 
+mkdir -p "$HYPRPAPER_LOCAL_DIR"
+mkdir -p "$WALLPAPER_DIR"
+
+# Copy Starfield wallpapers from dotfiles if missing
+for img in "$DOTFILES_WALL_DIR"/*.png; do
+  base_img="$(basename "$img")"
+
+  if [ ! -f "$WALLPAPER_DIR/$base_img" ]; then
+    cp "$img" "$WALLPAPER_DIR/"
+  fi
+done
+
+# Create local hyprpaper config if it doesn't exist
+HYPRPAPER_CONF="$HYPRPAPER_LOCAL_DIR/hyprpaper-local.conf"
+
+if [ ! -f "$HYPRPAPER_CONF" ]; then
+cat <<EOF > "$HYPRPAPER_CONF"
+wallpaper {
+    monitor =
+    path     = \$HOME/Pictures/Starfield/Starfield_14.png
+    fit_mode = cover
+}
+
+splash = false
+EOF
+fi
 
 log "🎉 Setup complete! You can reboot now."
