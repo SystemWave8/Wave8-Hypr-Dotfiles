@@ -125,7 +125,7 @@ install_apps() {
 install_video_drivers() {
   log "Installing GPU / media drivers..."
   sudo pacman -S --noconfirm --needed \
-    vulkan-intel vulkan-radeon vulkan-nouveau intel-media-driver libva-intel-driver \
+    vulkan-intel vulkan-radeon vulkan-nouveau intel-media-driver libva-intel-driver lib32-vulkan-radeon lib32-mesa\
     sof-firmware xf86-video-amdgpu xf86-video-ati xf86-video-nouveau
 }
 
