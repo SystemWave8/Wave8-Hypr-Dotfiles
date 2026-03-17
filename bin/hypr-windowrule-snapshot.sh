@@ -4,7 +4,7 @@ set -euo pipefail
 # -----------------------------
 # CONFIG
 # -----------------------------
-RULE_DIR="$HOME/.config/hypr-local-windowrules"
+RULE_DIR="$HOME/.config/hypr-local/windowrules"
 FLOAT_FILE="$RULE_DIR/floating.conf"
 TILED_FILE="$RULE_DIR/tiled.conf"
 

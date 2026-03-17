@@ -280,7 +280,7 @@ systemctl --user start mpd
 # -----------------------------
 # Hyprland local window rules - necessary for layout capture
 # -----------------------------
-RULE_DIR="$HOME/.config/hypr-local-windowrules"
+RULE_DIR="$HOME/.config/hypr-local/windowrules"
 
 mkdir -p "$RULE_DIR"
 
@@ -291,7 +291,7 @@ touch \
 # -----------------------------
 # Hyprpaper local configuration
 # -----------------------------
-HYPRPAPER_LOCAL_DIR="$HOME/.config/hyprpaper-local"
+HYPRPAPER_LOCAL_DIR="$HOME/.config/hypr-local/hyprpaper"
 WALLPAPER_DIR="$HOME/Pictures/Starfield"
 DOTFILES_WALL_DIR="$HOME/.dotfiles/Pictures/Starfield"
 
@@ -308,7 +308,7 @@ for img in "$DOTFILES_WALL_DIR"/*.png; do
 done
 
 # Create local hyprpaper config if it doesn't exist
-HYPRPAPER_CONF="$HYPRPAPER_LOCAL_DIR/hyprpaper-local.conf"
+HYPRPAPER_CONF="$HYPRPAPER_LOCAL_DIR/hyprpaper.conf"
 
 if [ ! -f "$HYPRPAPER_CONF" ]; then
 cat <<EOF > "$HYPRPAPER_CONF"
