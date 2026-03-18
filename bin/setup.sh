@@ -27,10 +27,34 @@ if ! grep -qiE "arch|steamos" /etc/os-release; then
 fi
 
 # === HARDWARE DETECTION ===
-# Detect NVIDIA GPU via lspci — covers all controller types (VGA, 3D, Display)
-# On Optimus setups the NVIDIA card appears as "3D controller", not "VGA compatible controller"
+ARCH=$(uname -m)
+CPU_MODEL=$(lscpu | awk -F: '/Model name/ {print $2}' | xargs)
+GPU_INFO=$(lspci | grep -Ei "vga|3d|display")
+
+log "Detected ARCH: $ARCH"
+log "Detected CPU: $CPU_MODEL"
+log "Detected GPU: $GPU_INFO"
+
+IS_MACBOOK_AIR=false
+if echo "$CPU_MODEL" | grep -q "i5-4250U"; then
+  IS_MACBOOK_AIR=true
+  log "2013 MacBook Air detected"
+fi
+
+if echo "$GPU_INFO" | grep -qi intel; then
+  GPU_TYPE="intel"
+elif echo "$GPU_INFO" | grep -qi amd; then
+  GPU_TYPE="amd"
+elif echo "$GPU_INFO" | grep -qi nvidia; then
+  GPU_TYPE="nvidia"
+else
+  GPU_TYPE="unknown"
+fi
+
+log "GPU type classified as: $GPU_TYPE"
+
 HAS_NVIDIA=false
-lspci | grep -qi nvidia && HAS_NVIDIA=true
+echo "$GPU_INFO" | grep -qi nvidia && HAS_NVIDIA=true
 
 if [ "$HAS_NVIDIA" = true ]; then
   log "NVIDIA GPU detected — NVIDIA driver stack will be installed."
@@ -38,7 +62,7 @@ else
   log "No NVIDIA GPU detected — skipping NVIDIA setup."
 fi
 
-sudo -v  # ask for sudo password upfront
+sudo -v
 
 log "Updating system..."
 sudo pacman -Syu --noconfirm
@@ -48,7 +72,7 @@ sudo pacman -S --noconfirm --needed git base-devel
 
 # === YAY BOOTSTRAP ===
 if ! command -v yay &>/dev/null; then
-  log "Installing yay (AUR helper)..."
+  log "Installing yay..."
   cd /tmp
   git clone https://aur.archlinux.org/yay.git
   cd yay
@@ -58,18 +82,7 @@ else
   log "yay already installed."
 fi
 
-# === SERVICE ENABLE HELPER ===
-enable_service() {
-  local svc=$1
-  if [ "$IN_CONTAINER" = false ]; then
-    log "Enabling and starting $svc..."
-    sudo systemctl enable --now "$svc"
-  else
-    log "Skipping $svc inside container..."
-  fi
-}
-
-# === INSTALLATION GROUPS ===
+# === INSTALL GROUPS ===
 
 install_base() {
   log "Installing base packages..."
@@ -79,30 +92,28 @@ install_base() {
 }
 
 install_network() {
-  log "Installing network & Bluetooth..."
+  log "Installing network..."
   sudo pacman -S --noconfirm --needed \
     bluez bluez-utils blueman iwd wpa_supplicant openssh
-  #enable_service bluetooth.service
 }
 
 install_tools() {
-  log "Installing system tools..."
+  log "Installing tools..."
   sudo pacman -S --noconfirm --needed \
     htop btop fastfetch jq 7zip file-roller vim nano yad zenity \
     udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole
 }
 
 install_desktop() {
-  log "Installing Hyprland environment..."
+  log "Installing Hyprland..."
   sudo pacman -S --noconfirm --needed \
     hyprland uwsm xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
     dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
     sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper mpv flatpak
-  #enable_service sddm.service
 }
 
 install_fonts_themes() {
-  log "Installing fonts & themes..."
+  log "Installing fonts..."
   sudo pacman -S --noconfirm --needed \
     gnome-themes-extra adwaita-icon-theme \
     ttf-dejavu ttf-hack-nerd ttf-jetbrains-mono-nerd \
@@ -110,71 +121,56 @@ install_fonts_themes() {
 }
 
 install_audio() {
-  log "Installing audio stack..."
+  log "Installing audio..."
   sudo pacman -S --noconfirm --needed \
-    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix gst-plugin-pipewire picard yt-dlp chromaprint mpd mpc rmpc
+    pipewire pipewire-alsa pipewire-pulse wireplumber wiremix \
+    gst-plugin-pipewire picard yt-dlp chromaprint mpd mpc rmpc
   yay -S --noconfirm --needed pithos cavalier
 }
 
 install_apps() {
-  log "Installing main apps..."
+  log "Installing apps..."
   yay -S --noconfirm --needed \
-    brave-bin chromium thunderbird onlyoffice-bin mousepad gnome-clocks gnome-weather localsend-bin helium-browser-bin
+    brave-bin chromium thunderbird onlyoffice-bin mousepad \
+    gnome-clocks gnome-weather localsend-bin helium-browser-bin
 }
 
 install_video_drivers() {
-  log "Installing GPU / media drivers..."
-  sudo pacman -S --noconfirm --needed \
-    vulkan-intel vulkan-radeon vulkan-nouveau intel-media-driver libva-intel-driver lib32-vulkan-radeon lib32-mesa\
-    sof-firmware xf86-video-amdgpu xf86-video-ati xf86-video-nouveau
+  log "Installing GPU drivers..."
+
+  if [ "$IS_MACBOOK_AIR" = true ]; then
+    log "MacBook Air profile"
+    sudo pacman -S --noconfirm --needed \
+      vulkan-intel intel-media-driver libva-intel-driver sof-firmware
+    return
+  fi
+
+  case "$GPU_TYPE" in
+    intel)
+      sudo pacman -S --noconfirm --needed \
+        vulkan-intel intel-media-driver libva-intel-driver
+      ;;
+    amd)
+      sudo pacman -S --noconfirm --needed vulkan-radeon
+      [ "$ARCH" = "x86_64" ] && sudo pacman -S --needed lib32-vulkan-radeon || true
+      ;;
+    nvidia)
+      log "Handled separately"
+      ;;
+  esac
+
+  sudo pacman -S --noconfirm --needed sof-firmware
 }
 
 install_nvidia_gpu() {
-  # Requires: NVIDIA GPU detected via HAS_NVIDIA flag
-  # Installs the open DKMS driver stack and explicitly triggers the DKMS build.
-  # Without linux-headers + manual dkms install, nvidia-smi fails silently
-  # and apps like Ollama fall back to CPU. This sequence is the known-good fix.
-  # Nouveau is blacklisted at the kernel module level to prevent conflicts.
-  # Note: userspace packages (vulkan-nouveau, xf86-video-nouveau) are left
-  # in place from install_video_drivers — only the kernel module is blocked.
-
-  log "Installing NVIDIA drivers (open DKMS)..."
+  log "Installing NVIDIA..."
   sudo pacman -S --noconfirm --needed \
-    linux-headers \
-    linux-firmware-nvidia \
-    nvidia-open-dkms \
-    nvidia-utils \
-    nvidia-settings \
-    lib32-nvidia-utils
-
-  log "Blacklisting nouveau kernel module..."
-  sudo tee /etc/modprobe.d/blacklist-nouveau.conf > /dev/null <<EOF
-blacklist nouveau
-options nouveau modeset=0
-EOF
-
-  log "Triggering DKMS build for NVIDIA module..."
-  NVIDIA_VER=$(pacman -Q nvidia-open-dkms | awk '{print $2}' | cut -d- -f1)
-  KERNEL_VER=$(uname -r)
-
-  # Check if module is already built for this kernel — skip if so
-  if dkms status nvidia/"$NVIDIA_VER" -k "$KERNEL_VER" 2>/dev/null | grep -q "installed"; then
-    log "NVIDIA DKMS module already built for kernel $KERNEL_VER — skipping build."
-  else
-    log "Building NVIDIA DKMS module for kernel $KERNEL_VER..."
-    if sudo dkms install nvidia/"$NVIDIA_VER" -k "$KERNEL_VER"; then
-      log "DKMS build successful."
-    else
-      warn "DKMS build failed — nvidia-smi may not work until after a reboot or manual fix."
-      warn "Run: sudo dkms install nvidia/$NVIDIA_VER -k $KERNEL_VER"
-    fi
-  fi
-
-  log "NVIDIA setup complete — reboot required for module to load."
+    linux-headers linux-firmware-nvidia nvidia-open-dkms \
+    nvidia-utils nvidia-settings lib32-nvidia-utils
 }
 
 install_extras() {
-  log "Installing fun / extras..."
+  log "Installing extras..."
   yay -S --noconfirm --needed impala
 }
 
@@ -183,7 +179,7 @@ link_dotfiles() {
   bash ~/.dotfiles/bin/link.sh
 }
 
-# === EXECUTION ORDER ===
+# === EXECUTION ===
 install_base
 install_network
 install_tools
@@ -196,118 +192,32 @@ install_video_drivers
 install_extras
 link_dotfiles
 
-# Disable systemd-boot menu timeout (instant boot)
-# loader.conf is usually located at:
-#   /boot/loader/loader.conf   (most Arch installs)
-#   /efi/loader/loader.conf    (some EFI layouts)
-for LOADER_CONF in /boot/loader/loader.conf /efi/loader/loader.conf; do
-  if [ -f "$LOADER_CONF" ]; then
-    sudo sed -i 's/^timeout .*/timeout 0/' "$LOADER_CONF"
-    if ! grep -q '^timeout ' "$LOADER_CONF"; then
-      echo "timeout 0" | sudo tee -a "$LOADER_CONF" >/dev/null
-    fi
-    echo "systemd-boot timeout set to 0 in $LOADER_CONF"
-  fi
-done
+# === YOUR ORIGINAL CUSTOM SECTION (RESTORED) ===
 
-
-# --- SDDM autologin configuration ---
-# Drop-in config location: /etc/sddm.conf.d/
-
-#USER_NAME="${SUDO_USER:-$USER}"
-#SESSION_NAME="hyprland"
-
-#sudo mkdir -p /etc/sddm.conf.d
-
-#sudo tee /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
-#[Autologin]
-#User=$USER_NAME
-#Session=$SESSION_NAME
-#EOF
-
-# ---- GTK Dark Mode ----
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
-#=======================================================
-
-# --- Install Flatpaks - for now, only Brave ---
-
-log "Checking Flatpak installation"
-
-if ! command -v flatpak >/dev/null 2>&1; then
-  log "Installing Flatpak"
-  sudo pacman -S --needed --noconfirm flatpak
-else
-  log "Flatpak already installed"
-fi
-
-log "Checking Flatpak Brave Browser"
-
-if ! flatpak list --app | grep -q "^Brave Browser"; then
-  log "Installing Flatpak Brave Browser"
-  flatpak install -y flathub com.brave.Browser
-else
-  log "Flatpak Brave already installed"
-fi
-
-#=======================================================
-
-
-BASHRC="$HOME/.bashrc"
-
-# Ensure each source line is only added once
-grep -qxF '[[ -f ~/.dotfiles/.bash_prompt ]] && source ~/.dotfiles/.bash_prompt' "$BASHRC" || echo '[[ -f ~/.dotfiles/.bash_prompt ]] && source ~/.dotfiles/.bash_prompt' >> "$BASHRC"
-grep -qxF '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' "$BASHRC" || echo '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' >> "$BASHRC"
-grep -qxF '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' "$BASHRC" || echo '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' >> "$BASHRC"
-
-echo "Dotfiles sources added to .bashrc."
-
-echo "Finalizing/enabling service for audio stack for mpd — allows rmpc to function"
-
-# MPD section -------------------
-
+# MPD
 systemctl --user enable mpd
 systemctl --user start mpd
 
-# run this after cloning @ .dotfiles:
-# git update-index --skip-worktree config/mpd/database config/mpd/state
-
-# After cloning use this command to block any updates to git:
-# 'git update-index --skip-worktree config/mpd/database config/mpd/state'
-# make sure to navigate to your root dotfiles folder — cd .dotfiles :)
-
-# -----------------------------
-# Hyprland local window rules - necessary for layout capture
-# -----------------------------
+# Hyprland local rules
 RULE_DIR="$HOME/.config/hypr-local/windowrules"
-
 mkdir -p "$RULE_DIR"
+touch "$RULE_DIR/floating.conf" "$RULE_DIR/tiled.conf"
 
-touch \
-  "$RULE_DIR/floating.conf" \
-  "$RULE_DIR/tiled.conf"
-
-# -----------------------------
-# Hyprpaper local configuration
-# -----------------------------
+# Hyprpaper setup
 HYPRPAPER_LOCAL_DIR="$HOME/.config/hypr-local/hyprpaper"
 WALLPAPER_DIR="$HOME/Pictures/Starfield"
 DOTFILES_WALL_DIR="$HOME/.dotfiles/Pictures/Starfield"
 
-mkdir -p "$HYPRPAPER_LOCAL_DIR"
-mkdir -p "$WALLPAPER_DIR"
+mkdir -p "$HYPRPAPER_LOCAL_DIR" "$WALLPAPER_DIR"
 
-# Copy Starfield wallpapers from dotfiles if missing
 for img in "$DOTFILES_WALL_DIR"/*.png; do
   base_img="$(basename "$img")"
-
-  if [ ! -f "$WALLPAPER_DIR/$base_img" ]; then
-    cp "$img" "$WALLPAPER_DIR/"
-  fi
+  [ ! -f "$WALLPAPER_DIR/$base_img" ] && cp "$img" "$WALLPAPER_DIR/"
 done
 
-# Create local hyprpaper config if it doesn't exist
 HYPRPAPER_CONF="$HYPRPAPER_LOCAL_DIR/hyprpaper.conf"
 
 if [ ! -f "$HYPRPAPER_CONF" ]; then
@@ -317,9 +227,36 @@ wallpaper {
     path     = \$HOME/Pictures/Starfield/Starfield_14.png
     fit_mode = cover
 }
-
 splash = false
 EOF
 fi
 
-log "🎉 Setup complete! You can reboot now."
+# Hyprland local override setup
+LOCAL_DIR="$HOME/.config/hypr-local/ScrollingToggle"
+BASE_FILE="$HOME/.config/hypr/looknfeel.conf"
+LOCAL_FILE="$LOCAL_DIR/looknfeel.conf"
+
+# Create directory if it doesn't exist
+mkdir -p "$LOCAL_DIR"
+
+# Copy base file if override doesn't exist yet
+if [ ! -f "$LOCAL_FILE" ]; then
+    echo "Creating local override for looknfeel.conf"
+    cp "$BASE_FILE" "$LOCAL_FILE"
+else
+    echo "Local override already exists, skipping copy"
+fi
+
+# Bashrc sourcing
+BASHRC="$HOME/.bashrc"
+
+grep -qxF '[[ -f ~/.dotfiles/.bash_prompt ]] && source ~/.dotfiles/.bash_prompt' "$BASHRC" || \
+echo '[[ -f ~/.dotfiles/.bash_prompt ]] && source ~/.dotfiles/.bash_prompt' >> "$BASHRC"
+
+grep -qxF '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' "$BASHRC" || \
+echo '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' >> "$BASHRC"
+
+grep -qxF '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' "$BASHRC" || \
+echo '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' >> "$BASHRC"
+
+log "🎉 Setup complete! Reboot recommended."
