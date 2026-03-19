@@ -98,6 +98,6 @@
 
 //////// Clock Setup /////////////
 
-"clock": { "format": "{:%a %I:%M %p}","on-click": "~/.local/bin/toggle-window.sh org.gnome.Weather 'gnome-weather'" }
+"clock": { "format": "{:%a %I:%M %p}","tooltip-format": "{:%A, %B %d, %Y}","on-click": "~/.local/bin/toggle-window.sh org.gnome.Weather 'gnome-weather'" }
 
 },  
