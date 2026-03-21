@@ -30,3 +30,9 @@
 #network {
   font-size: 14px;  /* bump up from default */
 }
+
+#custom-weather {
+  margin-left: 12px;
+  margin-right: 4px;
+  font-size: 14px;
+}
