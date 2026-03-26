@@ -132,7 +132,7 @@ install_apps() {
   log "Installing apps..."
   yay -S --noconfirm --needed \
     brave-bin chromium thunderbird onlyoffice-bin mousepad \
-    gnome-clocks gnome-weather localsend-bin helium-browser-bin
+    gnome-clocks gnome-weather localsend-bin helium-browser-bin vscodium-bin
 }
 
 install_video_drivers() {
