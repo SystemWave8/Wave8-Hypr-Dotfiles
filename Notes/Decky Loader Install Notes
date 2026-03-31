@@ -1,0 +1,9 @@
+Getting Decky Loader to work on your build.
+
+Keep Dolphin and make sure to install Konsole.
+
+then just download the decky_installer.desktop and run it from dolphin.
+
+this in turn will call konsole to open and run the install script.
+
+after this you can use Decky Loader as usual in Gamescope
