@@ -11,3 +11,4 @@ logs/
 *.pem
 *.crt
 
+config/gtk-3.0/bookmarks

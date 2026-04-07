@@ -29,8 +29,8 @@ Start in
 
 Launch Options
 
--e '/home/Wav-8T/.local/share/shadPS4QtLauncher/versions/v0.13.0 - Ghost
-of Matthewshima - 2025-12-24/Shadps4-sdl.AppImage' -g
+-e '/home/Wav-8T/.local/share/shadPS4QtLauncher/versions/v0.13.0 - Ghostof Matthewshima - 2025-12-24/Shadps4-sdl.AppImage' -g
+
 /home/Wav-8T/emudeck/Emulation/storage/shadps4/games/CUSA03173/eboot.bin
 
 
@@ -39,9 +39,7 @@ Zelda - Tears of the Kingdom
 
 Target:
 
-"/home/Wav-8T/emudeck/Emulation/roms/emulators/ryujinx.sh" --fullscreen
-"/home/Wav-8T/.config/EmuDeck/Emulation/roms/switch/Atlas - Divine Tears
-1.nsp"
+"/home/Wav-8T/emudeck/Emulation/roms/emulators/ryujinx.sh" --fullscreen "/home/Wav-8T/.config/EmuDeck/Emulation/roms/switch/Atlas - Divine Tears1.nsp"
 
 
 Start In
