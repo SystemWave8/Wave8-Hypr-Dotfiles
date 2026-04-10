@@ -1,0 +1,11 @@
+Netflix Setup for AUR package in gamescope
+
+add non steam game via - > usr/bin/brave
+
+once added:
+
+Target:
+	/usr/bin/brave --ozone-platform=x11 --no-sandbox --app=https://www.netflix.com/browse --start-fullscreen
+
+Path
+	/usr/bin/
