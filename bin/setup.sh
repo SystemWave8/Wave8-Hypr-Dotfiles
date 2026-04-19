@@ -192,7 +192,35 @@ install_video_drivers
 install_extras
 link_dotfiles
 
-# === YOUR ORIGINAL CUSTOM SECTION (RESTORED) ===
+# Disable systemd-boot menu timeout (instant boot)
+# loader.conf is usually located at:
+#   /boot/loader/loader.conf   (most Arch installs)
+#   /efi/loader/loader.conf    (some EFI layouts)
+for LOADER_CONF in /boot/loader/loader.conf /efi/loader/loader.conf; do
+  if [ -f "$LOADER_CONF" ]; then
+    sudo sed -i 's/^timeout .*/timeout 0/' "$LOADER_CONF"
+    if ! grep -q '^timeout ' "$LOADER_CONF"; then
+      echo "timeout 0" | sudo tee -a "$LOADER_CONF" >/dev/null
+    fi
+    echo "systemd-boot timeout set to 0 in $LOADER_CONF"
+  fi
+done
+
+
+# --- SDDM autologin configuration ---
+# Drop-in config location: /etc/sddm.conf.d/
+
+USER_NAME="${SUDO_USER:-$USER}"
+SESSION_NAME="hyprland"
+
+sudo mkdir -p /etc/sddm.conf.d
+
+sudo tee /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
+[Autologin]
+User=$USER_NAME
+Session=$SESSION_NAME
+EOF
+
 
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'

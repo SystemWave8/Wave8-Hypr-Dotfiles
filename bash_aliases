@@ -7,3 +7,5 @@ alias waveupdate='yay -Syu --noconfirm'
 # any other aliases can go here
 #alias ll='ls -lh'
 #alias gs='git status'
+
+alias catsddm='cat /etc/sddm.conf.d/autologin.conf'
