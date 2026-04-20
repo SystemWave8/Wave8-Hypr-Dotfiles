@@ -179,6 +179,7 @@ link_dotfiles() {
   bash ~/.dotfiles/bin/link.sh
 }
 
+
 # === EXECUTION ===
 install_base
 install_network
@@ -191,6 +192,7 @@ install_video_drivers
 [ "$HAS_NVIDIA" = true ] && install_nvidia_gpu
 install_extras
 link_dotfiles
+
 
 # Disable systemd-boot menu timeout (instant boot)
 # loader.conf is usually located at:
@@ -302,12 +304,21 @@ mkdir -p "$LOCAL_DIR"
 
 # Copy base file if override doesn't exist yet
 if [ ! -f "$LOCAL_FILE" ]; then
-    echo "Creating local override for monitors.conf"
+    echo "Creating local override for autostart.conf"
     cp "$BASE_FILE" "$LOCAL_FILE"
 else
     echo "Local override already exists, skipping copy"
 fi
 
+clean_autostart() {
+  log "cleaning local autostart dotfiles..."
+  bash ~/.dotfiles/bin/local-autostart-cleanup.sh
+}
+
+# === Start Clean Up of Autostart ===
+clean_autostart
+
+echo "cleaning up hyprlocal - > autostart - > bluetooth is node dependent"
 
 # Bashrc sourcing
 BASHRC="$HOME/.bashrc"
