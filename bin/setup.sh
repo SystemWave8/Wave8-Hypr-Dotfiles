@@ -219,6 +219,7 @@ sudo tee /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
 [Autologin]
 User=$USER_NAME
 Session=$SESSION_NAME
+Relogin=true
 EOF
 
 
@@ -274,6 +275,39 @@ if [ ! -f "$LOCAL_FILE" ]; then
 else
     echo "Local override already exists, skipping copy"
 fi
+
+# Hyprland local override setup - Monitors
+LOCAL_DIR="$HOME/.config/hypr-local"
+BASE_FILE="$HOME/.config/hypr/monitors.conf"
+LOCAL_FILE="$LOCAL_DIR/monitors.conf"
+
+# Create directory if it doesn't exist
+mkdir -p "$LOCAL_DIR"
+
+# Copy base file if override doesn't exist yet
+if [ ! -f "$LOCAL_FILE" ]; then
+    echo "Creating local override for monitors.conf"
+    cp "$BASE_FILE" "$LOCAL_FILE"
+else
+    echo "Local override already exists, skipping copy"
+fi
+
+# Hyprland local override setup - Autostart
+LOCAL_DIR="$HOME/.config/hypr-local"
+BASE_FILE="$HOME/.config/hypr/autostart.conf"
+LOCAL_FILE="$LOCAL_DIR/autostart.conf"
+
+# Create directory if it doesn't exist
+mkdir -p "$LOCAL_DIR"
+
+# Copy base file if override doesn't exist yet
+if [ ! -f "$LOCAL_FILE" ]; then
+    echo "Creating local override for monitors.conf"
+    cp "$BASE_FILE" "$LOCAL_FILE"
+else
+    echo "Local override already exists, skipping copy"
+fi
+
 
 # Bashrc sourcing
 BASHRC="$HOME/.bashrc"
