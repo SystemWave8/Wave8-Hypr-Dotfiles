@@ -30,7 +30,7 @@
     //"wm",
    {
                 "type": "wm",
-                "format": "Hyrpland"  //use this line to customize your tile
+                "format": "Hyprland"  //use this line to customize your tile
             },
     "wmtheme",
     //"theme",
