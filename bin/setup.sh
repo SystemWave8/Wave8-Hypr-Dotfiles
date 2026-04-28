@@ -232,6 +232,12 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 systemctl --user enable mpd
 systemctl --user start mpd
 
+#run this after cloning @ .dotfiles:
+# git update-index --skip-worktree config/mpd/database config/mpd/state
+
+#After cloning use this command to block any updates to git - >'git update-index --skip-worktree config/mpd/database config/mpd/state'
+#make sure to navigate to your root dotfiles folder - cd .dotfiles :)
+
 # Hyprland local rules
 RULE_DIR="$HOME/.config/hypr-local/windowrules"
 mkdir -p "$RULE_DIR"
