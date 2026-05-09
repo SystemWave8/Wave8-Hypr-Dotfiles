@@ -1,0 +1,14 @@
+profile undocked {
+    output eDP-1 enable
+    exec pkill waybar; waybar &
+    exec hyprctl dispatch exec hyprpaper
+    exec ~/.local/bin/undock.sh
+}
+
+profile docked {
+    output DP-2 enable
+    output eDP-1 disable
+    exec pkill waybar; waybar &
+    exec hyprctl dispatch exec hyprpaper
+    exec ~/.local/bin/dock.sh
+}

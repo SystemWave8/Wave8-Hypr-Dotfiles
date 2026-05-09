@@ -11,7 +11,7 @@
 
   "hyprland/workspaces": {
     "disable-scroll": true,
-    "all-outputs": true,
+    //"all-outputs": true,
     "format": "{icon}", // has to be icon in order to display the active icon
     "format-icons": {
       "active": "",   // replaces number with icon when active
@@ -31,7 +31,7 @@
 //////// Persistent Workspaces //////////
 
 
-   "persistent-workspaces": { "*": 5, } // 5 workspaces by default on every monitor
+   "persistent-workspaces": { "*": [1,2,3,4,5] } // 5 workspaces by default on every monitor
 },
 
 
