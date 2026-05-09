@@ -4,6 +4,23 @@ set -e
 
 echo "Setting up kanshi..."
 
+# Configure logind to ignore lid switch (kanshi handles display management)
+LOGIND_DROPIN="/etc/systemd/logind.conf.d/kanshi-lid.conf"
+
+if grep -q "HandleLidSwitch=ignore" "$LOGIND_DROPIN" 2>/dev/null; then
+    echo "Lid switch settings already configured, skipping..."
+else
+    echo "Configuring lid switch behavior..."
+    sudo mkdir -p /etc/systemd/logind.conf.d
+    sudo tee "$LOGIND_DROPIN" > /dev/null << 'EOF'
+[Login]
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+EOF
+    echo "Lid switch settings written. Restarting systemd-logind..."
+    sudo systemctl restart systemd-logind
+fi
+
 # Install kanshi from AUR if not already installed
 if ! command -v kanshi &> /dev/null; then
     echo "Installing kanshi..."
