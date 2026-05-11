@@ -17,8 +17,7 @@ else
 HandleLidSwitch=ignore
 HandleLidSwitchExternalPower=ignore
 EOF
-    echo "Lid switch settings written. Restarting systemd-logind..."
-    sudo systemctl restart systemd-logind
+   
 fi
 
 # Install kanshi from AUR if not already installed
@@ -86,3 +85,7 @@ fi
 echo ""
 echo "Kanshi setup complete!"
 echo "Verify service status with: systemctl --user status kanshi"
+
+echo "A reboot is required to apply lid switch settings."
+read -rp "Reboot now? (y/N): " confirm
+[[ "$confirm" == "y" ]] && sudo reboot
