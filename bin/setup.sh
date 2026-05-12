@@ -101,7 +101,7 @@ install_tools() {
   log "Installing tools..."
   sudo pacman -S --noconfirm --needed \
     htop btop fastfetch jq 7zip file-roller vim nano yad zenity brightnessctl \
-    udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole
+    udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole grim slurp
 }
 
 install_desktop() {
@@ -247,8 +247,9 @@ touch "$RULE_DIR/floating.conf" "$RULE_DIR/tiled.conf"
 HYPRPAPER_LOCAL_DIR="$HOME/.config/hypr-local/hyprpaper"
 WALLPAPER_DIR="$HOME/Pictures/Starfield"
 DOTFILES_WALL_DIR="$HOME/.dotfiles/Pictures/Starfield"
+SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
 
-mkdir -p "$HYPRPAPER_LOCAL_DIR" "$WALLPAPER_DIR"
+mkdir -p "$HYPRPAPER_LOCAL_DIR" "$WALLPAPER_DIR" "$SCREENSHOTS_DIR"
 
 for img in "$DOTFILES_WALL_DIR"/*.png; do
   base_img="$(basename "$img")"
