@@ -101,7 +101,7 @@ install_tools() {
   log "Installing tools..."
   sudo pacman -S --noconfirm --needed \
     htop btop fastfetch jq 7zip file-roller vim nano yad zenity brightnessctl \
-    udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole grim slurp
+    udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole grim slurp loupe
 }
 
 install_desktop() {
