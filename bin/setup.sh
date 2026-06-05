@@ -109,7 +109,7 @@ install_desktop() {
   sudo pacman -S --noconfirm --needed \
     hyprland uwsm xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-utils \
     dunst waybar wofi thunar thunar-archive-plugin tumbler polkit-kde-agent \
-    sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper mpv flatpak
+    sddm gnome-keyring seahorse dotnet-runtime-8.0 hyprpaper mpv flatpak gnome-calendar
 }
 
 install_fonts_themes() {
