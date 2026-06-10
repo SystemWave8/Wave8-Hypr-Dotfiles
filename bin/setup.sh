@@ -125,7 +125,7 @@ install_audio() {
   sudo pacman -S --noconfirm --needed \
     pipewire pipewire-alsa pipewire-pulse wireplumber wiremix \
     gst-plugin-pipewire picard yt-dlp chromaprint mpd mpc rmpc
-  yay -S --noconfirm --needed pithos cavalier
+  yay -S --noconfirm --needed pithos #cavalier
 }
 
 install_apps() {
