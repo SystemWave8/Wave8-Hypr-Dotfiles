@@ -228,6 +228,19 @@ EOF
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 
+# xdg-desktop-portal config
+if [ ! -f "$HOME/.config/xdg-desktop-portal/hyprland-portals.conf" ]; then
+    mkdir -p "$HOME/.config/xdg-desktop-portal"
+    cat > "$HOME/.config/xdg-desktop-portal/hyprland-portals.conf" << 'EOF'
+[preferred]
+default=hyprland;gtk
+org.freedesktop.impl.portal.Settings=gtk
+EOF
+    echo "Created hyprland-portals.conf"
+else
+    echo "hyprland-portals.conf already exists, skipping"
+fi
+
 # MPD
 systemctl --user enable mpd
 systemctl --user start mpd
