@@ -11,3 +11,11 @@ alias wave='yay -Syu --noconfirm'
 alias catsddm='cat /etc/sddm.conf.d/autologin.conf'
 alias soss='steamos-session-select'
 alias catoss='cat /usr/lib/os-session-select'
+
+alias bc250='cd bc250-40cu-unlock'
+
+
+#BC-250 Specific
+
+alias cyan='sudo nano /etc/cyan-skillfish-governor-smu/config.toml'
+alias gov='sudo systemctl restart cyan-skillfish-governor-smu'
