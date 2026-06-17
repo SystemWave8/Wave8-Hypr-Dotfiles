@@ -23,8 +23,8 @@ if [ "$RES" = "1920x1200" ]; then
     hyprctl dispatch movewindowpixel exact 1268 35,title:^fastfetch$
     hyprctl dispatch resizewindowpixel exact 643 830,title:^fastfetch$
 
-    hyprctl dispatch movewindowpixel exact 1268 877,class:^org\.gnome\.clocks$
-    hyprctl dispatch resizewindowpixel exact 643 314,class:^org\.gnome\.clocks$
+    hyprctl dispatch movewindowpixel exact 1268 877,title:^clock$
+    hyprctl dispatch resizewindowpixel exact 643 314,title:^clock$
 
 elif [ "$RES" = "2736x1824" ]; then
     # Surface
@@ -40,6 +40,6 @@ elif [ "$RES" = "2736x1824" ]; then
     hyprctl dispatch movewindowpixel exact 1152 35,title:^fastfetch$
     hyprctl dispatch resizewindowpixel exact 663 902,title:^fastfetch$
 
-    hyprctl dispatch movewindowpixel exact 1152 949,class:^org\.gnome\.clocks$
-    hyprctl dispatch resizewindowpixel exact 663 258,class:^org\.gnome\.clocks$
+    hyprctl dispatch movewindowpixel exact 1152 949,title:^clock$
+    hyprctl dispatch resizewindowpixel exact 663 258,title:^clock$
 fi

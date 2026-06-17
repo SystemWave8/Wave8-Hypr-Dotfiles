@@ -18,5 +18,5 @@ hyprctl dispatch resizewindowpixel exact 832 1036,title:^btop$
 hyprctl dispatch movewindowpixel exact 1252 35,title:^fastfetch$
 hyprctl dispatch resizewindowpixel exact 659 726,title:^fastfetch$
 
-hyprctl dispatch movewindowpixel exact 1252 773,class:^org\.gnome\.clocks$
-hyprctl dispatch resizewindowpixel exact 659 298,class:^org\.gnome\.clocks$
+hyprctl dispatch movewindowpixel exact 1252 773,title:^clock$
+hyprctl dispatch resizewindowpixel exact 659 298,title:^clock$
