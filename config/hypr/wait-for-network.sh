@@ -37,7 +37,8 @@ if [ "$USER" = "wave-air" ]; then
 else
     # Full stack for any other machine
      cavalier &
-     env GTK_THEME=Adwaita:dark $HOME/.local/bin/gnome-clocks-dark &
+     #env GTK_THEME=Adwaita:dark $HOME/.local/bin/gnome-clocks-dark & # No longer used because GTK Sucks
      kitty -T "fastfetch" sh -c "fastfetch; exec $SHELL" &
+     kitty -T "clock" sh -c "tty-clock -c -s -t -C 5" &
     :
 fi
