@@ -12,10 +12,15 @@ alias catsddm='cat /etc/sddm.conf.d/autologin.conf'
 alias soss='steamos-session-select'
 alias catoss='cat /usr/lib/os-session-select'
 
-alias bc250='cd bc250-40cu-unlock'
+
 
 
 #BC-250 Specific
 
+alias bc250='cd bc250-40cu-unlock'
 alias cyan='sudo nano /etc/cyan-skillfish-governor-smu/config.toml'
 alias gov='sudo systemctl restart cyan-skillfish-governor-smu'
+
+# Check the CU Map
+
+alias cu='sudo /home/wave8bc/bc250-40cu-unlock/scripts/cu_map.sh'
