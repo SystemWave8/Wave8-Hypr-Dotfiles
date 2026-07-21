@@ -1,0 +1,64 @@
+/*
+ * wallpicker.rasi — rofi theme matching bcland's wofi look/feel
+ * Adapted from ~/.config/wofi/hyprconf.css + style.css
+ */
+* {
+    font:            "JetBrainsMonoNF-Regular 22";
+    bg:              rgba(50, 50, 50, 90%);
+    bg-selected:     rgba(100, 150, 255, 25%);
+    fg:              #ffffff;
+}
+window {
+    background-color: @bg;
+    border-radius:     12px;
+    padding:           10px;
+    width:             35%;
+    location:          center;
+}
+mainbox {
+    background-color: transparent;
+    children:          [ "listview" ];
+}
+inputbar {
+    enabled: false;
+}
+entry {
+    text-color:        @fg;
+    placeholder:        "Wallpaper";
+    horizontal-align:   0.5;
+}
+listview {
+    columns:    2;
+    lines:      2;
+    spacing:    8px;
+    background-color: transparent;
+}
+element normal.normal, element alternate.normal {
+    background-color: transparent;
+    text-color:        @fg;
+    padding:            6px 8px;
+    border-radius:      6px;
+    orientation:        vertical;
+    children:           [ "element-icon", "element-text" ];
+}
+element selected.normal {
+    background-color: @bg-selected;
+    text-color:        @fg;
+    padding:            6px 8px;
+    border-radius:      6px;
+    orientation:        vertical;
+    children:           [ "element-icon", "element-text" ];
+}
+element-icon {
+    background-color:   transparent;
+    size:               8em;
+    horizontal-align:   0.5;
+    vertical-align:     0.5;
+}
+element-text {
+    background-color:   transparent;
+    text-color:         @fg;
+    horizontal-align:   0.5;
+    vertical-align:     0.5;
+    font:               "JetBrainsMonoNF-Regular 10";
+}

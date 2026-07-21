@@ -23,4 +23,6 @@ alias gov='sudo systemctl restart cyan-skillfish-governor-smu'
 
 # Check the CU Map
 
-alias cu='sudo /home/wave8bc/bc250-40cu-unlock/scripts/cu_map.sh'
+alias cu='/home/wave8bc/bc250-40cu-unlock/scripts/cu_map.sh'
+
+alias bc250-rebuild='cd /home/wave8bc/bc250-40cu-unlock && sudo ./scripts/bc250-enable-40cu-arch.sh build && sudo mkinitcpio -P && sudo reboot'

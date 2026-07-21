@@ -101,7 +101,8 @@ install_tools() {
   log "Installing tools..."
   sudo pacman -S --noconfirm --needed \
     htop btop fastfetch jq 7zip file-roller vim nano yad zenity brightnessctl \
-    udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole grim slurp loupe gnome-disk-utility
+    udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole grim slurp loupe gnome-disk-utility gnome-calculator \
+    rofi imagetrick
 }
 
 install_desktop() {
@@ -259,10 +260,11 @@ touch "$RULE_DIR/floating.conf" "$RULE_DIR/tiled.conf"
 # Hyprpaper setup
 HYPRPAPER_LOCAL_DIR="$HOME/.config/hypr-local/hyprpaper"
 WALLPAPER_DIR="$HOME/Pictures/Starfield"
+WALLTHUMB_DIR="$HOME/Pictures/wallthumbs"
 DOTFILES_WALL_DIR="$HOME/.dotfiles/Pictures/Starfield"
 SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
 
-mkdir -p "$HYPRPAPER_LOCAL_DIR" "$WALLPAPER_DIR" "$SCREENSHOTS_DIR"
+mkdir -p "$HYPRPAPER_LOCAL_DIR" "$WALLPAPER_DIR" "$SCREENSHOTS_DIR" "$WALLTHUMB_DIR"
 
 for img in "$DOTFILES_WALL_DIR"/*.png; do
   base_img="$(basename "$img")"
@@ -273,6 +275,7 @@ HYPRPAPER_CONF="$HYPRPAPER_LOCAL_DIR/hyprpaper.conf"
 
 if [ ! -f "$HYPRPAPER_CONF" ]; then
 cat <<EOF > "$HYPRPAPER_CONF"
+ipc = on
 wallpaper {
     monitor =
     path     = \$HOME/Pictures/Starfield/Starfield_14.png
