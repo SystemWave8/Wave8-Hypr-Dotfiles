@@ -13,6 +13,7 @@ THUMB_DIR="$HOME/Pictures/wallthumbs"
 THEME="$HOME/.config/rofi/wallpicker.rasi"
 THUMB_SIZE="320x180"
 FIT_MODE="cover"
+STATE_FILE="$HOME/.config/hypr-local/hyprpaper/last"
 
 mkdir -p "$THUMB_DIR"
 shopt -s nullglob nocaseglob
@@ -69,3 +70,7 @@ fi
 
 # ---------- Apply ----------
 hyprctl hyprpaper wallpaper ",${chosen_path},${FIT_MODE}"
+
+# ---------- Persist ----------
+mkdir -p "$(dirname "$STATE_FILE")"
+echo "$chosen_path" > "$STATE_FILE"
