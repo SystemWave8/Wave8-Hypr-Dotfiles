@@ -102,7 +102,7 @@ install_tools() {
   sudo pacman -S --noconfirm --needed \
     htop btop fastfetch jq 7zip file-roller vim nano yad zenity brightnessctl \
     udiskie gvfs gvfs-mtp gvfs-gphoto2 cpio cmake konsole grim slurp loupe gnome-disk-utility gnome-calculator \
-    rofi imagetrick
+    rofi imagemagick
 }
 
 install_desktop() {
