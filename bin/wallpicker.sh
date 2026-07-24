@@ -23,6 +23,7 @@ folders=()
 for d in "$BASE_DIR"/*/; do
     name="$(basename "$d")"
     [[ "$name" == "wallthumbs" ]] && continue   # skip our own cache folder
+    [[ "$name" == "Screenshots" ]] && continue
     folders+=("$name")
 done
 
