@@ -4,10 +4,11 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 
 local function get_hostname()
-    local handle = io.popen("hostname")
-    local result = handle:read("*a")
-    handle:close()
-    return result:gsub("%s+$", "") -- trim trailing newline
+    local f = io.open("/etc/hostname", "r")
+    if not f then return "" end
+    local hostname = f:read("*l") -- read first line
+    f:close()
+    return hostname or ""
 end
 
 local hostname = get_hostname()
