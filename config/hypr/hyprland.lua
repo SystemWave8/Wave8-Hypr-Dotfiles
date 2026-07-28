@@ -17,7 +17,7 @@ require("windowrules")
 
 
 
--- Overrides for local ---
+-- Overrides for local --- source files located at ~.hypr-local
 
 require("windowrules-local")
 
