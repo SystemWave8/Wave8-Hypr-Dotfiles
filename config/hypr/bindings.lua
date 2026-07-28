@@ -14,6 +14,10 @@ local menu        = "wofi"
 
 local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 
+-- hypr-conf-menu
+hl.bind(mainMod .. " + ALT + Space", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.local/bin/hypr-conf-menu.sh"))
+hl.bind(mainMod .. " + ALT + B", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.local/bin/bin-script-menu.sh"))
+
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
@@ -70,3 +74,9 @@ hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),       { locked = tr
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
+
+
+
+-- Window Capture Tool
+-- hypr-windowrule-snapshot
+hl.bind(mainMod .. " + ALT + comma", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.local/bin/hypr-windowrule-snapshot.sh"))
