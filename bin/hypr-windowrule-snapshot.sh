@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 # -----------------------------
 # CONFIG
 # -----------------------------
 RULE_DIR="$HOME/.config/hypr-local/windowrules"
-FLOAT_FILE="$RULE_DIR/floating.conf"
-TILED_FILE="$RULE_DIR/tiled.conf"
-
+FLOAT_FILE="$RULE_DIR/floating.lua"
+TILED_FILE="$RULE_DIR/tiled.lua"
 mkdir -p "$RULE_DIR"
+
+# Ensure both files exist with a valid, empty Lua table so dofile() never
+# errors out on a fresh host before any rules have been captured.
+for f in "$FLOAT_FILE" "$TILED_FILE"; do
+    if [[ ! -s "$f" ]]; then
+        printf 'return {\n}\n' > "$f"
+    fi
+done
 
 # -----------------------------
 # MODE SELECTION
@@ -16,7 +22,6 @@ mkdir -p "$RULE_DIR"
 ACTION=$(printf \
 "capture → floating\ncapture → floating - w/ workspace\ncapture → tiled\nreset\ncancel\n" \
 | wofi --dmenu --prompt "Hypr Rule Recorder")
-
 [[ -z "$ACTION" || "$ACTION" == "cancel" ]] && exit 0
 
 case "$ACTION" in
@@ -33,8 +38,8 @@ case "$ACTION" in
         OUT_FILE="$TILED_FILE"
         ;;
     "reset")
-        > "$FLOAT_FILE"
-        > "$TILED_FILE"
+        printf 'return {\n}\n' > "$FLOAT_FILE"
+        printf 'return {\n}\n' > "$TILED_FILE"
         notify-send -a "Hypr Rule Recorder" -u low "All window rules reset"
         exit 0
         ;;
@@ -43,12 +48,10 @@ case "$ACTION" in
         ;;
 esac
 
-
 # -----------------------------
 # ACTIVE WORKSPACE
 # -----------------------------
 ACTIVE_WS=$(hyprctl activeworkspace -j | jq -r '.id')
-
 
 # -----------------------------
 # CAPTURE WINDOWS
@@ -56,7 +59,6 @@ ACTIVE_WS=$(hyprctl activeworkspace -j | jq -r '.id')
 hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
     .[] | select(.workspace.id == $ws)
 ' | while read -r win; do
-
     class=$(jq -r '.class' <<< "$win")
     title=$(jq -r '.title' <<< "$win")
     x=$(jq -r '.at[0]' <<< "$win")
@@ -73,85 +75,81 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
     if [[ "$class" == "kitty" && -n "$title" && "$title" != "null" ]]; then
         use_title=true
     fi
-
     name="$class"
     $use_title && name="$title"
 
+    # Escape for Lua pattern/regex use inside match:class / match:title
     esc_class=$(printf '%s\n' "$class" | sed 's/[.[\*^$(){}+?|]/\\&/g')
     esc_title=$(printf '%s\n' "$title" | sed 's/[.[\*^$(){}+?|]/\\&/g')
+    # Escape double quotes for safe embedding inside a Lua string literal
+    lua_name=$(printf '%s\n' "$name" | sed 's/"/\\"/g')
 
     # -----------------------------
-    # REMOVE EXISTING MATCHING RULE
+    # STRIP HEADER / FOOTER, DEDUP EXISTING MATCHING ENTRY
     # -----------------------------
-    awk -v class="^$esc_class$" \
-        -v title="^$esc_title$" \
-        -v ws="$ACTIVE_WS" \
+    BODY=$(sed '1d;$d' "$OUT_FILE")
+
+    DEDUPED_BODY=$(awk \
+        -v class_needle="class = \"^${esc_class}\$\"" \
+        -v title_needle="title = \"^${esc_title}\$\"" \
         -v use_title="$use_title" '
-        BEGIN { skip=0; buf="" }
-
-        /^windowrule[[:space:]]*{/ {
-            skip=0
+        BEGIN { buf=""; found_class=0; found_title=0 }
+        /^  \{/ {
             buf=$0 ORS
+            found_class=0
+            found_title=0
             next
         }
-
         buf != "" {
             buf = buf $0 ORS
-
-            if (
-                $0 ~ "match:class = " class &&
-                (!use_title || $0 ~ "match:title = " title)
-            ) {
-                skip=1
-            }
-
-            if ($0 ~ /^}/) {
-                if (!skip) {
-                    printf "%s", buf
-                }
+            if (index($0, class_needle) > 0) { found_class=1 }
+            if (use_title == "true" && index($0, title_needle) > 0) { found_title=1 }
+            if ($0 ~ /^  \},/) {
+                skip = (found_class == 1 && (use_title != "true" || found_title == 1))
+                if (!skip) { printf "%s", buf }
                 buf=""
             }
             next
         }
-
         { print }
-    ' "$OUT_FILE" > "$OUT_FILE.tmp" && mv "$OUT_FILE.tmp" "$OUT_FILE"
-
+    ' <<< "$BODY")
 
     # -----------------------------
-    # APPEND NEW RULE
+    # BUILD NEW ENTRY
     # -----------------------------
     {
-        echo "windowrule {"
-        echo "    name = $name"
-        echo "    match:class = ^$esc_class$"
-
+        printf '  {\n'
+        printf '    name = "%s",\n' "$lua_name"
         if $use_title; then
-            echo "    match:title = ^$esc_title$"
+            printf '    match = { class = "^%s$", title = "^%s$" },\n' "$esc_class" "$esc_title"
+        else
+            printf '    match = { class = "^%s$" },\n' "$esc_class"
         fi
-
-        echo
-
-        # Only apply workspace restriction if requested
         if [[ "$MODE" == "floating_ws" || "$MODE" == "tiled" ]]; then
-            echo "    workspace = $ACTIVE_WS"
+            printf '    workspace = %s,\n' "$ACTIVE_WS"
         fi
-
         if [[ "$MODE" == "floating_global" || "$MODE" == "floating_ws" ]]; then
-            echo "    float = on"
-            echo "    size = $w $h"
-            echo "    move = $x $y"
+            printf '    float = true,\n'
+            printf '    size = { %s, %s },\n' "$w" "$h"
+            printf '    move = { %s, %s },\n' "$x" "$y"
         fi
+        printf '  },\n'
+    } > "$RULE_DIR/.entry.tmp"
 
-        echo "}"
-        echo
-    } >> "$OUT_FILE"
+    # -----------------------------
+    # REASSEMBLE FILE: header + deduped body + new entry + footer
+    # -----------------------------
+    {
+        printf 'return {\n'
+        printf '%s\n' "$DEDUPED_BODY"
+        cat "$RULE_DIR/.entry.tmp"
+        printf '}\n'
+    } > "$OUT_FILE.tmp" && mv "$OUT_FILE.tmp" "$OUT_FILE"
 
+    rm -f "$RULE_DIR/.entry.tmp"
 done
 
-
 echo "Rules updated in $OUT_FILE"
-
 notify-send \
   -a "Hypr Rule Recorder" \
   -u low \

@@ -16,3 +16,13 @@ require("windowrules")
 
 
 
+
+-- Overrides for local ---
+
+require("windowrules-local")
+
+
+
+
+
+
