@@ -26,8 +26,12 @@ local function load_rules(filename)
 		return
 	end
 
-	for _, rule in ipairs(rules_or_err) do
-		hl.window_rule(rule)
+	for i, rule in ipairs(rules_or_err) do
+		local rule_ok, rule_err = pcall(hl.window_rule, rule)
+		if not rule_ok then
+			print("windowrules-local: rule #" .. i .. " in " .. path
+				.. " (name=" .. tostring(rule.name) .. ") failed: " .. tostring(rule_err))
+		end
 	end
 end
 

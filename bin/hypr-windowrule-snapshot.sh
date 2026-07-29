@@ -78,22 +78,39 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
     name="$class"
     $use_title && name="$title"
 
-    # Escape for Lua pattern/regex use inside match:class / match:title
+    # Escape for regex use inside match.class / match.title (Hyprland side)
     esc_class=$(printf '%s\n' "$class" | sed 's/[.[\*^$(){}+?|]/\\&/g')
     esc_title=$(printf '%s\n' "$title" | sed 's/[.[\*^$(){}+?|]/\\&/g')
-    # Escape double quotes for safe embedding inside a Lua string literal
-    lua_name=$(printf '%s\n' "$name" | sed 's/"/\\"/g')
+
+    # Escape those for safe embedding inside a Lua string literal (Lua side).
+    # esc_class/esc_title contain regex-escaping backslashes (e.g. "\.") which
+    # are NOT valid Lua escape sequences on their own -- Lua needs "\\." to
+    # produce a string that actually contains "\.". Double the backslashes.
+    lua_esc_class=$(printf '%s\n' "$esc_class" | sed 's/\\/\\\\/g')
+    lua_esc_title=$(printf '%s\n' "$esc_title" | sed 's/\\/\\\\/g')
+
+    # Escape backslashes then double quotes for the display name
+    lua_name=$(printf '%s\n' "$name" | sed 's/\\/\\\\/g; s/"/\\"/g')
 
     # -----------------------------
     # STRIP HEADER / FOOTER, DEDUP EXISTING MATCHING ENTRY
     # -----------------------------
     BODY=$(sed '1d;$d' "$OUT_FILE")
 
-    DEDUPED_BODY=$(awk \
-        -v class_needle="class = \"^${esc_class}\$\"" \
-        -v title_needle="title = \"^${esc_title}\$\"" \
-        -v use_title="$use_title" '
-        BEGIN { buf=""; found_class=0; found_title=0 }
+    # NOTE: needles are passed via ENVIRON, not -v. awk's -v assignment
+    # re-interprets backslash escapes in its value (same as a string literal),
+    # which would silently collapse the doubled backslashes we just built for
+    # Lua-safety. Environment variables aren't re-interpreted that way.
+    DEDUPED_BODY=$(CLASS_NEEDLE="class = \"^${lua_esc_class}\$\"" \
+        TITLE_NEEDLE="title = \"^${lua_esc_title}\$\"" \
+        USE_TITLE="$use_title" \
+        awk '
+        BEGIN {
+            class_needle = ENVIRON["CLASS_NEEDLE"]
+            title_needle = ENVIRON["TITLE_NEEDLE"]
+            use_title = ENVIRON["USE_TITLE"]
+            buf=""; found_class=0; found_title=0
+        }
         /^  \{/ {
             buf=$0 ORS
             found_class=0
@@ -121,17 +138,17 @@ hyprctl clients -j | jq -c --argjson ws "$ACTIVE_WS" '
         printf '  {\n'
         printf '    name = "%s",\n' "$lua_name"
         if $use_title; then
-            printf '    match = { class = "^%s$", title = "^%s$" },\n' "$esc_class" "$esc_title"
+            printf '    match = { class = "^%s$", title = "^%s$" },\n' "$lua_esc_class" "$lua_esc_title"
         else
-            printf '    match = { class = "^%s$" },\n' "$esc_class"
+            printf '    match = { class = "^%s$" },\n' "$lua_esc_class"
         fi
         if [[ "$MODE" == "floating_ws" || "$MODE" == "tiled" ]]; then
-            printf '    workspace = %s,\n' "$ACTIVE_WS"
+            printf '    workspace = "%s",\n' "$ACTIVE_WS"
         fi
         if [[ "$MODE" == "floating_global" || "$MODE" == "floating_ws" ]]; then
             printf '    float = true,\n'
-            printf '    size = { %s, %s },\n' "$w" "$h"
-            printf '    move = { %s, %s },\n' "$x" "$y"
+            printf '    size = "%s %s",\n' "$w" "$h"
+            printf '    move = "%s %s",\n' "$x" "$y"
         fi
         printf '  },\n'
     } > "$RULE_DIR/.entry.tmp"
