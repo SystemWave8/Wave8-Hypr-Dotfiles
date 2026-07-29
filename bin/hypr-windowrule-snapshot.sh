@@ -4,6 +4,7 @@ set -euo pipefail
 # CONFIG
 # -----------------------------
 RULE_DIR="$HOME/.config/hypr-local/windowrules"
+FLOAT_FILE="$RULE_DIR/standard.lua"
 FLOAT_FILE="$RULE_DIR/floating.lua"
 TILED_FILE="$RULE_DIR/tiled.lua"
 mkdir -p "$RULE_DIR"
@@ -41,6 +42,7 @@ case "$ACTION" in
         printf 'return {\n}\n' > "$FLOAT_FILE"
         printf 'return {\n}\n' > "$TILED_FILE"
         notify-send -a "Hypr Rule Recorder" -u low "All window rules reset"
+	hyprctl reload
         exit 0
         ;;
     *)
@@ -171,6 +173,8 @@ notify-send \
   -a "Hypr Rule Recorder" \
   -u low \
   "Layout Updated ($MODE)"
+
+hyprctl reload
 
 # -----------------------------
 # CLEANUP TEMP FILES

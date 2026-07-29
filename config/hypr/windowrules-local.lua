@@ -37,3 +37,4 @@ end
 
 load_rules("floating")
 load_rules("tiled")
+load_rules("standard")
