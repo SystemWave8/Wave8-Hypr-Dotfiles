@@ -1,3 +1,9 @@
+-- Helpers --
+--	   --
+
+
+local focus_or_launch = require("focus_or_launch")
+
 ---------------------
 ---- MY PROGRAMS ----
 ---------------------
@@ -33,6 +39,44 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("shutdown now"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("reboot"))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exit())
+
+
+-- Launch/focus Web Apps
+hl.bind(mainMod .. " + Y", function()
+  focus_or_launch("brave-www.youtube.com__-Default", "brave --app=https://www.youtube.com/")
+end)
+
+hl.bind(mainMod .. " + C", function()
+  focus_or_launch("chrome-chat.openai.com__-Default", "chromium --class=chrome-chat.openai.com__-Default --app=https://chat.openai.com/")
+end)
+
+hl.bind(mainMod .. " + ALT + C", function()
+  focus_or_launch("chrome-claude.ai__new-Default", "helium-browser --app=https://claude.ai/new")
+end)
+
+hl.bind(mainMod .. " + H", function()
+  focus_or_launch("chrome-wiki.hyprland.org__-Default", "chromium --class=chrome-wiki.hyprland.org__-Default --app=https://wiki.hyprland.org/")
+end)
+
+hl.bind(mainMod .. " + N", function()
+  focus_or_launch("chrome-notebooklm.google.com__-Default", "chromium --app=https://notebooklm.google.com/")
+end)
+
+hl.bind(mainMod .. " + G", function()
+  focus_or_launch("chrome-grok.com__-Default", "chromium --app=https://grok.com/")
+end)
+
+hl.bind(mainMod .. " + period", function()
+  focus_or_launch("chrome-github.com__SystemWave8_Wave8-Hypr-Dotfiles-Default", "chromium --app=https://github.com/SystemWave8/Wave8-Hypr-Dotfiles")
+end)
+
+hl.bind(mainMod .. " + O", function()
+  focus_or_launch("chrome-outlook.live.com__mail_0_-Default", "helium-browser --app=https://outlook.live.com/mail/0/?login_hint=systemwave%40outlook.com")
+end)
+
+hl.bind(mainMod .. " + M", function()
+  focus_or_launch("chrome-music.youtube.com__-Default", "helium-browser --app=https://music.youtube.com/")
+end)
 
 
 -- Move focus with mainMod + arrow keys
