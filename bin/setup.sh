@@ -257,18 +257,23 @@ RULE_DIR="$HOME/.config/hypr-local/windowrules"
 mkdir -p "$RULE_DIR"
 touch "$RULE_DIR/floating.conf" "$RULE_DIR/tiled.conf"
 
+# Symlink Lua standard rules
+ln -sfn \
+    "$HOME/.dotfiles/lua specific/standard.lua" \
+    "$RULE_DIR/standard.lua"
+
 # Hyprpaper setup
 HYPRPAPER_LOCAL_DIR="$HOME/.config/hypr-local/hyprpaper"
-WALLPAPER_DIR="$HOME/Pictures/Starfield"
-WALLTHUMB_DIR="$HOME/Pictures/wallthumbs"
-DOTFILES_WALL_DIR="$HOME/.dotfiles/Pictures/Starfield"
+PICTURES_DIR="$HOME/Pictures"
+DOTFILES_PICTURES_DIR="$HOME/.dotfiles/Pictures"
 SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
 
-mkdir -p "$HYPRPAPER_LOCAL_DIR" "$WALLPAPER_DIR" "$SCREENSHOTS_DIR" "$WALLTHUMB_DIR"
+mkdir -p "$HYPRPAPER_LOCAL_DIR" "$PICTURES_DIR" "$SCREENSHOTS_DIR"
 
-for img in "$DOTFILES_WALL_DIR"/*.png; do
-  base_img="$(basename "$img")"
-  [ ! -f "$WALLPAPER_DIR/$base_img" ] && cp "$img" "$WALLPAPER_DIR/"
+for dir in "$DOTFILES_PICTURES_DIR"/*/; do
+    [ -d "$dir" ] || continue
+    base_dir="$(basename "$dir")"
+    [ ! -d "$PICTURES_DIR/$base_dir" ] && cp -r "$dir" "$PICTURES_DIR/"
 done
 
 HYPRPAPER_CONF="$HYPRPAPER_LOCAL_DIR/hyprpaper.conf"
