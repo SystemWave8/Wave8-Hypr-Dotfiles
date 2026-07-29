@@ -49,6 +49,16 @@ hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("shutdown now"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("reboot"))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exit())
 
+-- Kill all windows --
+
+hl.bind(mainMod .. " + K", function()
+    local ws = hl.get_active_workspace()
+    local windows = hl.get_workspace_windows(ws.id)
+    for _, w in pairs(windows) do
+        hl.dispatch(hl.dsp.window.close({ window = "address:" .. w.address }))
+    end
+end)
+
 
 -- Launch/focus Web Apps
 hl.bind(mainMod .. " + Y", function()
