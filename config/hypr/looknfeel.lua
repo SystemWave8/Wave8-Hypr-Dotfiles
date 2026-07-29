@@ -21,7 +21,7 @@ hl.config({
         -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
         allow_tearing = false,
 
-        layout = "dwindle",
+        layout = "scrolling",
     },
 
     decoration = {
@@ -115,6 +115,7 @@ hl.config({
 -- See https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/ for more
 hl.config({
     scrolling = {
+	column_width = 0.7,  -- 0.7 = 70% of monitor width per column
         fullscreen_on_one_column = true,
     },
 })
