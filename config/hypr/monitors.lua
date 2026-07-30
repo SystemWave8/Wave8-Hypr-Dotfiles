@@ -13,10 +13,11 @@ end
 
 local hostname = get_hostname()
 local scale = (hostname == "surfland") and "1.5" or "1"
+local mode = (hostname == "topland") and "1920x1080@60" or "preferred"
 
 hl.monitor({
     output   = "",
-    mode     = "preferred",
+    mode     = mode,
     position = "auto",
     scale    = scale,
 })
