@@ -1,20 +1,14 @@
 #!/bin/bash
+# focus-or-launch.sh
+# Usage: focus-or-launch.sh <window-class> "<launch command>"
 
 CLASS="$1"
-shift
-CMD="$@"
+CMD="$2"
 
-# Find a matching window ID (works for multi-word class names)
-WINID=$(hyprctl clients | awk -v cls="$CLASS" '
-/Window/ { addr = $2 }
-/^[[:space:]]*class:/ {
-    line = $0
-    sub(/^[[:space:]]*class:[[:space:]]*/, "", line)  # strip "class:" + spaces/tabs
-    if (line == cls) print addr
-}')
+ADDR=$(hyprctl clients -j | jq -r --arg class "$CLASS" '.[] | select(.class==$class) | .address' | head -1)
 
-if [ -n "$WINID" ]; then
-    hyprctl dispatch focuswindow address:0x$WINID
+if [ -n "$ADDR" ]; then
+  hyprctl dispatch "hl.dsp.focus({window = \"address:$ADDR\"})"
 else
-    $CMD &
+  hyprctl dispatch "hl.dsp.exec_cmd(\"$CMD\")"
 fi
