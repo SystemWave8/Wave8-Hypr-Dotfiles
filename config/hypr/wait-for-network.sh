@@ -1,6 +1,24 @@
 #!/bin/bash
 
 notify-send "Greetings System Wave"
+
+# Wavedell-only: wait for iwd to bind the wifi adapter before proceeding
+if [ "$USER" = "wavedell" ]; then
+    MAX_WAIT=15
+    for i in $(seq 1 $MAX_WAIT); do
+        if iwctl device list 2>/dev/null | grep -q wlan0; then
+            break
+        fi
+        sleep 1
+    done
+    if ! iwctl device list 2>/dev/null | grep -q wlan0; then
+        notify-send "iwd adapter missing, restarting"
+        sudo systemctl restart iwd
+        sleep 2
+    fi
+fi
+
+
 # Wait until we have connectivity
 while ! ping -c1 -W1 8.8.8.8 >/dev/null 2>&1; do
     sleep 2
