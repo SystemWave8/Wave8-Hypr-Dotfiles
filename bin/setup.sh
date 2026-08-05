@@ -180,6 +180,13 @@ link_dotfiles() {
   bash ~/.dotfiles/bin/link.sh
 }
 
+install_fishtools() {
+  log "Installing fish tools..."
+  sudo pacman -S --noconfirm --needed \
+    fish fzf
+}
+
+
 
 # === EXECUTION ===
 install_base
@@ -190,6 +197,9 @@ install_fonts_themes
 install_audio
 install_apps
 install_video_drivers
+install_fishtools
+
+
 [ "$HAS_NVIDIA" = true ] && install_nvidia_gpu
 install_extras
 link_dotfiles
@@ -359,5 +369,18 @@ echo '[[ -f ~/.dotfiles/bash_env ]] && source ~/.dotfiles/bash_env' >> "$BASHRC"
 
 grep -qxF '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' "$BASHRC" || \
 echo '[[ -f ~/.dotfiles/bash_aliases ]] && source ~/.dotfiles/bash_aliases' >> "$BASHRC"
+
+
+# Set Fish as the default shell
+echo "setting up fish for shell"
+
+FISH_BIN="$(command -v fish)"
+
+if [ -n "$FISH_BIN" ] && [ "$SHELL" != "$FISH_BIN" ]; then
+    echo "Setting Fish as the default shell..."
+    chsh -s "$FISH_BIN"
+    echo "Done. Log out and back in (or reboot) to start using Fish."
+fi
+
 
 log "🎉 Setup complete! Reboot recommended."
