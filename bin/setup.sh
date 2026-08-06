@@ -132,8 +132,8 @@ install_audio() {
 install_apps() {
   log "Installing apps..."
   yay -S --noconfirm --needed \
-    brave-bin chromium onlyoffice-bin mousepad \
-    gnome-weather localsend-bin helium-browser-bin vscodium-bin tty-clock #thunderbird
+    brave-bin chromium libreoffice-fresh mousepad \
+    gnome-weather localsend-bin helium-browser-bin vscodium-bin tty-clock #thunderbird onlyoffice-bin
 }
 
 install_video_drivers() {
