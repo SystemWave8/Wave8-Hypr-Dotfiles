@@ -12,3 +12,5 @@ logs/
 *.crt
 
 config/gtk-3.0/bookmarks
+
+config/fish/fish_variables

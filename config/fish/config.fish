@@ -9,6 +9,10 @@ set -g fish_greeting
 
 set -gx FZF_DEFAULT_OPTS "--height=40% --border"
 
+### adding in .local/bin path....maybe? ###
+
+fish_add_path ~/.local/bin
+
 
 ### Password Prompt Change ###
 
