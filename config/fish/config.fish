@@ -5,6 +5,10 @@ if status is-interactive
 
 set -g fish_greeting
 
+### Cleaning up fzf - > Too many hits ###
+
+set -gx FZF_DEFAULT_OPTS "--height=40% --border"
+
 
 ### Password Prompt Change ###
 
