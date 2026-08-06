@@ -23,7 +23,7 @@
     //"shell",
    {
                 "type": "shell",
-                "format": "bash"  //use this line to customize your tile
+                "format": "fish"  //use this line to customize your tile
             },
     //"display",
     //"de",
