@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=RMPC ~ Music Player
-Exec=kitty -e rmpc
+Exec=bash -c '$HOME/.local/bin/focus-or-launch.sh "rmpc" "kitty --class rmpc -T rmpc rmpc"'
 Icon=multimedia-audio-player
 Type=Application
 Categories=Audio;Player;
