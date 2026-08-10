@@ -54,4 +54,6 @@ function play
     "$HOME/.local/bin/focus-or-launch.sh" \
         "rmpc" \
         "kitty --class rmpc -T rmpc rmpc"
+	
+	exit
 end

@@ -81,8 +81,8 @@ hl.bind(mainMod .. " + N", function()
   focus_or_launch("chrome-notebooklm.google.com__-Default", "chromium --app=https://notebooklm.google.com/")
 end)
 
-hl.bind(mainMod .. " + G", function()
-  focus_or_launch("chrome-grok.com__-Default", "chromium --app=https://grok.com/")
+hl.bind(mainMod .. " + R", function()
+  focus_or_launch("rmpc", "kitty --class rmpc -T rmpc rmpc")
 end)
 
 hl.bind(mainMod .. " + period", function()
