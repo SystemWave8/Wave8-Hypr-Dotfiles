@@ -39,5 +39,7 @@ alias cyan='sudo nano /etc/cyan-skillfish-governor-smu/config.toml'
 alias gov='sudo systemctl restart cyan-skillfish-governor-smu'
 alias cu='~/bc250-40cu-unlock/scripts/cu_map.sh'
 alias bc250-rebuild='cd ~/bc250-40cu-unlock && sudo ./scripts/bc250-enable-40cu-arch.sh build && sudo mkinitcpio -P && sudo reboot'
+alias music-rename='music-rename.fish'
+
 
 end
