@@ -8,7 +8,7 @@ function play
     -iname '*.m4a' -o \
     -iname '*.ogg' -o \
     -iname '*.wav' \
-	\) -printf '%f\n' | fzf --height=40% --border)
+	\) -printf '%f\n' | sort -f | tac | fzf --height=40% --border)
 
     # Nothing selected
     if test -z "$selected"
