@@ -118,7 +118,7 @@ install_fonts_themes() {
   sudo pacman -S --noconfirm --needed \
     gnome-themes-extra adwaita-icon-theme \
     ttf-dejavu ttf-hack-nerd ttf-jetbrains-mono-nerd \
-    ttf-nerd-fonts-symbols woff2-font-awesome
+    ttf-nerd-fonts-symbols woff2-font-awesome noto-fonts-cjk
 }
 
 install_audio() {
