@@ -98,6 +98,10 @@ hl.bind(mainMod .. " + M", function()
 end)
 
 
+
+-- "HOME" Apps used to run personal scripts
+
+
 -- Window Capture Tool-- hypr-windowrule-snapshot --
 
 hl.bind(mainMod .. " + ALT + comma", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.local/bin/hypr-windowrule-snapshot.sh"))
@@ -110,6 +114,12 @@ hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.local/bin/wal
 -- Steam OS Launcher
 
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("/usr/bin/steamos-session-select"))
+
+
+-- Restart Kanshi
+
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("systemctl --user restart kanshi"), { locked = true })
+
 
 
 -- Move focus with mainMod + arrow keys
@@ -168,6 +178,10 @@ hl.bind(mainMod .. " + ALT + L", function()
     end
 end)
 
+
+-- screen capture using grim and slurp
+hl.bind("PRINT", hl.dsp.exec_cmd('grim -g "$(slurp)" ~/Pictures/Screenshots/screenshot-$(date +%Y%m%d-%H%M%S).png'), { locked = true })
+-- hl.bind("PRINT", hl.dsp.exec_cmd('grim ~/Pictures/screenshot-$(date +%Y%m%d-%H%M%S).png'), { locked = true })
 
 
 -- Example special workspace (scratchpad)
