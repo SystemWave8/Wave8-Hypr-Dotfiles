@@ -56,11 +56,11 @@ log "GPU type classified as: $GPU_TYPE"
 HAS_NVIDIA=false
 echo "$GPU_INFO" | grep -qi nvidia && HAS_NVIDIA=true
 
-if [ "$HAS_NVIDIA" = true ]; then
-  log "NVIDIA GPU detected — NVIDIA driver stack will be installed."
-else
-  log "No NVIDIA GPU detected — skipping NVIDIA setup."
-fi
+#if [ "$HAS_NVIDIA" = true ]; then
+ # log "NVIDIA GPU detected — NVIDIA driver stack will be installed."
+#else
+ # log "No NVIDIA GPU detected — skipping NVIDIA setup."
+#fi
 
 sudo -v
 
@@ -166,8 +166,8 @@ install_video_drivers() {
 install_nvidia_gpu() {
   log "Installing NVIDIA..."
   sudo pacman -S --noconfirm --needed \
-    linux-headers linux-firmware-nvidia nvidia-open-dkms \
-    nvidia-utils nvidia-settings lib32-nvidia-utils
+    linux-headers #linux-firmware-nvidia nvidia-open-dkms \
+    #nvidia-utils nvidia-settings lib32-nvidia-utils
 }
 
 install_extras() {
