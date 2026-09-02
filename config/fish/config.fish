@@ -24,8 +24,10 @@ end
 
 ### Aliases ###
 
-# Downloads
+# Audio and Video Download commands
 alias ytmp3='yt-dlp -x --audio-format mp3 --audio-quality 0 -o "$HOME/Downloads/%(title)s.%(ext)s"'
+alias ytmkv 'yt-dlp -f "bv*+ba/b" --merge-output-format mkv -o "$HOME/Downloads/%(title)s.%(ext)s"'
+
 
 # System
 alias wave='yay -Syu --noconfirm'
@@ -43,3 +45,5 @@ alias music-rename='music-rename.fish'
 
 
 end
+
+zoxide init fish | source

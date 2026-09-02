@@ -183,7 +183,7 @@ link_dotfiles() {
 install_fishtools() {
   log "Installing fish tools..."
   sudo pacman -S --noconfirm --needed \
-    fish fzf
+    fish fzf zoxide
 }
 
 
@@ -381,6 +381,13 @@ if [ -n "$FISH_BIN" ] && [ "$SHELL" != "$FISH_BIN" ]; then
     chsh -s "$FISH_BIN"
     echo "Done. Log out and back in (or reboot) to start using Fish."
 fi
+
+# echoing zoxide into config.fish where needed and on new installs
+
+grep -qxF 'zoxide init fish | source' ~/.config/fish/config.fish || \
+    echo 'zoxide init fish | source' >> ~/.config/fish/config.fish
+
+    echo "zoxide installed in Fish. Double check later"
 
 
 log "🎉 Setup complete! Reboot recommended."
