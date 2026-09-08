@@ -390,4 +390,18 @@ grep -qxF 'zoxide init fish | source' ~/.config/fish/config.fish || \
     echo "zoxide installed in Fish. Double check later"
 
 
+# ─────────────────────────────────────
+# Default File Manager
+# ─────────────────────────────────────
+
+current=$(xdg-mime query default inode/directory)
+
+if [[ "$current" != "thunar.desktop" ]]; then
+    echo "Fixing inode/directory default (was: $current)"
+    xdg-mime default thunar.desktop inode/directory
+else
+    echo "Already correct: $current"
+fi
+
+
 log "🎉 Setup complete! Reboot recommended."
