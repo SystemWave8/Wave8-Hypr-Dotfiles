@@ -43,7 +43,7 @@ alias cu='~/bc250-40cu-unlock/scripts/cu_map.sh'
 alias bc250-rebuild='cd ~/bc250-40cu-unlock && sudo ./scripts/bc250-enable-40cu-arch.sh build && sudo mkinitcpio -P && sudo reboot'
 alias music-rename='music-rename.fish'
 
-#Relay Specific
+#Relay Specific # Older Values use the new markdown pack below
 
 alias relay-pack='python3 relay-md.py pack'
 alias relay-unpack='python3 relay-md.py unpack'
@@ -56,6 +56,12 @@ alias md-pack='python3 relay-md.py pack'
 alias md-unpack='python3 relay-md.py unpack'
 alias md-check='python3 relay-md.py check'
 alias md-diff='python3 relay-md.py diff'
+
+
+#Relay Specific pull
+
+alias agent-push='git push origin agent-lab'
+alias agent-pull='git pull --ff-only'
 
 #Reset Fish While in terminal
 
