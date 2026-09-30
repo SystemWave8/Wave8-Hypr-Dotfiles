@@ -50,9 +50,21 @@ alias relay-unpack='python3 relay-md.py unpack'
 alias relay-check='python3 relay-md.py check'
 alias relay-diff='python3 relay-md.py diff'
 
+#Markdown Pack - > Non Specific
+
+alias md-pack='python3 relay-md.py pack'
+alias md-unpack='python3 relay-md.py unpack'
+alias md-check='python3 relay-md.py check'
+alias md-diff='python3 relay-md.py diff'
+
 #Reset Fish While in terminal
 
 alias source-fish='source ~/.config/fish/config.fish'
+
+#ComfyUI
+
+alias comfy 'cd ~/AI/comfyui; and source .venv/bin/activate.fish'
+alias comfystart 'python main.py'
 
 
 end
