@@ -62,6 +62,7 @@ alias md-diff='python3 relay-md.py diff'
 
 alias agent-push='git push origin agent-lab'
 alias agent-pull='git pull --ff-only'
+alias abyss='cargo run -- --abyss'
 
 #Reset Fish While in terminal
 
