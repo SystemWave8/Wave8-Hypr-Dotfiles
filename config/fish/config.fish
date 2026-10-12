@@ -74,6 +74,18 @@ alias comfy 'cd ~/AI/comfyui; and source .venv/bin/activate.fish'
 alias comfystart 'python main.py'
 
 
+#llama.cpp 35A-A3B Activation:
+
+	#Step 1 - > activate Server
+alias llm-server '~/llama.cpp/build/bin/llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M --n-cpu-moe 32 -ngl 99 -c 32768 --jinja --port 8080'
+	#Step 2 navigate to relay and then run aider agent
+alias aider-local 'aider --model openai/local --openai-api-base http://localhost:8080/v1 --openai-api-key none --no-show-model-warnings'
+
+
+
 end
 
 zoxide init fish | source
+
+# opencode
+fish_add_path /home/wave8-arc2/.opencode/bin
