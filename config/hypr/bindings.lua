@@ -47,6 +47,7 @@ hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 --Shutdown // Reboot // Classic hyprctl dispatch exit
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("shutdown now"))
 hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("reboot"))
+hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("systemctl suspend"))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exit())
 
 -- Kill all windows --
