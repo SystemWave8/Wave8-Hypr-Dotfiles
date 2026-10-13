@@ -77,11 +77,15 @@ alias comfystart 'python main.py'
 #llama.cpp 35A-A3B Activation:
 
 	#Step 1 - > activate Server
-alias llm-server '~/llama.cpp/build/bin/llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M --n-cpu-moe 32 -ngl 99 -c 32768 --jinja --port 8080'
+#alias llm-server '~/llama.cpp/build/bin/llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M --n-cpu-moe 32 -ngl 99 -c 32768 --jinja --port 8080'
+alias llm-server '~/llama.cpp/build/bin/llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M --n-cpu-moe 36 -ngl 99 -c 65536 --jinja --chat-template-kwargs '{"enable_thinking": false}' --port 8080'
+		   
 	#Step 2 navigate to relay and then run aider agent
 alias aider-local 'aider --model openai/local --openai-api-base http://localhost:8080/v1 --openai-api-key none --no-show-model-warnings'
 
+#Intel Arc btop
 
+alias btop-arc='~/src/btop-levelzero/bin/btop'
 
 end
 

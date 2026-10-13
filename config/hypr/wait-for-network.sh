@@ -46,7 +46,12 @@ notify-send "Have a great day!"
 
 # Always launch these
 pithos &
+
+if [ "$USER" = "wave8-arc2" ]; then
+kitty -T "btop" "$HOME/src/btop-levelzero/bin/btop" &
+else
 kitty -T "btop" btop &
+fi
 
 # Only minimal stack for wave-air
 if [ "$USER" = "wave-air" ]; then
