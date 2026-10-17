@@ -64,6 +64,12 @@ alias agent-push='git push origin agent-lab'
 alias agent-pull='git pull --ff-only'
 alias abyss='cargo run -- --abyss'
 
+#mikro driver LED test
+
+alias navmk3='cd "/home/wave8-arc2/Music Production/Micro MK3 Driver/maschine-mikro-mk3-driver"'
+
+alias light='cargo run -p driver -- --config example_config.toml --test-leds'
+
 #Reset Fish While in terminal
 
 alias source-fish='source ~/.config/fish/config.fish'
