@@ -63,6 +63,8 @@ alias md-diff='python3 relay-md.py diff'
 alias agent-push='git push origin agent-lab'
 alias agent-pull='git pull --ff-only'
 alias abyss='cargo run -- --abyss'
+alias gui='cargo run -- --gui'
+alias release='cargo run --release'
 
 #mikro driver LED test
 
@@ -92,6 +94,7 @@ alias aider-local 'aider --model openai/local --openai-api-base http://localhost
 #Intel Arc btop
 
 alias btop-arc='~/src/btop-levelzero/bin/btop'
+
 
 end
 
