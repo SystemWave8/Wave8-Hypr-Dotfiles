@@ -64,7 +64,8 @@ alias agent-push='git push origin agent-lab'
 alias agent-pull='git pull --ff-only'
 alias abyss='cargo run -- --abyss'
 alias gui='cargo run -- --gui'
-alias release='cargo run --release'
+alias oldrelease='cargo run --release'
+alias release='cargo run --release -- --gui'
 
 #mikro driver LED test
 
@@ -95,6 +96,13 @@ alias aider-local 'aider --model openai/local --openai-api-base http://localhost
 
 alias btop-arc='~/src/btop-levelzero/bin/btop'
 
+
+#lock commands for encryption
+
+alias lock='fusermount3 -u ~/.wavecrate/Access'
+alias unlock='gocryptfs ~/.wavecrate/Core ~/.wavecrate/Access'
+alias vaultpw='gocryptfs -passwd ~/.wavecrate/Core'
+alias vaultinit='gocryptfs -init ~/.wavecrate/Core' #or any other directory to initiate.
 
 end
 
